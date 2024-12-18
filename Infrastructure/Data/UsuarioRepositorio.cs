@@ -18,6 +18,13 @@ namespace Infrastructure.Data
 
             try
             {
+                var existe = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == usuario.Email);
+
+                if (existe != null)
+                {
+                    throw new Exception("Ya existe un usuario con este correo electronico.");
+                }
+
                 await _context.Usuarios.AddAsync(usuario);
                 await _context.SaveChangesAsync();
 
@@ -28,51 +35,47 @@ namespace Infrastructure.Data
             }
         }
 
-
         public async Task ActualizarUsuarioAsync(Usuario usuario)
         {
             try
             {
-                var usuarioViejo = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == usuario.Email);
-                if (usuarioViejo != null)
-                {
-                    usuarioViejo.Nombre = usuario.Nombre ?? usuarioViejo.Nombre;
-                    usuarioViejo.Apellido = usuario.Apellido ?? usuarioViejo.Apellido;
-                    usuarioViejo.Telefono = usuario.Telefono ?? usuarioViejo.Telefono;
-                    usuarioViejo.Direccion = usuario.Direccion ?? usuarioViejo.Direccion;
-                    usuarioViejo.Email = usuario.Email ?? usuarioViejo.Email;
-                    usuarioViejo.Rol = usuario.Rol ?? usuarioViejo.Rol;
+                var usuarioExistente = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == usuario.Email || u.Telefono == usuario.Telefono);
 
-                    await _context.SaveChangesAsync();
+                if (usuarioExistente == null)
+                {
+                    throw new Exception("No se encontro un usuario con el dato proporcionado.");
                 }
 
+                usuarioExistente.Nombre = usuario.Nombre ?? usuarioExistente.Nombre;
+                usuarioExistente.Apellido = usuario.Apellido ?? usuarioExistente.Apellido;
+                usuarioExistente.Telefono = usuario.Telefono ?? usuarioExistente.Telefono;
+                usuarioExistente.Direccion = usuario.Direccion ?? usuarioExistente.Direccion;
+                usuarioExistente.Email = usuario.Email ?? usuarioExistente.Email;
+                usuarioExistente.Rol = usuario.Rol ?? usuarioExistente.Rol;
+
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Error inesperado: " + ex.Message);
+                throw new InvalidOperationException("Error inesperado al actualizar el usuario: " + ex.Message);
             }
         }
 
-        public async Task EliminarUsuarioAsync(string email)
+        public async Task EliminarUsuarioAsync(string? email, string? telefono)
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(email))
-                {
-                    throw new ArgumentNullException(nameof(email), "El email es obligatorio.");
-                }
 
-                var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email); ;
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email || u.Telefono == telefono); ;
 
                 if (usuario == null)
                 {
-                    throw new InvalidOperationException("No se encontró un usuario con el email especificado.");
+                    throw new Exception("No se encontro un usuario con el dato proporcionado.");
                 }
 
                 _context.Usuarios.Remove(usuario);
 
                 await _context.SaveChangesAsync();
-
             }
             catch (Exception ex)
             {
@@ -93,30 +96,22 @@ namespace Infrastructure.Data
             }
         }
 
-        public async Task<Usuario> ObtenerUsuarioAsync(string? email = null, string? telefono = null)
+        public async Task<Usuario> ObtenerUsuarioAsync(string? email, string? telefono)
         {
             //Verificar que haya uno de los dos datos presentes
-            if (string.IsNullOrWhiteSpace(email) && string.IsNullOrWhiteSpace(telefono))
+            if (string.IsNullOrEmpty(email) && string.IsNullOrEmpty(telefono))
+            {
                 throw new ArgumentException("Debe proporcionar un email o teléfono para buscar el usuario.");
-
-            //hacer la query dinamica
-            var query = _context.Usuarios.AsQueryable();
-
-            if (!string.IsNullOrWhiteSpace(telefono))
-            {
-                query = query.Where(u => u.Telefono == telefono);
-
             }
 
-            if (!string.IsNullOrWhiteSpace(email))
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email || u.Telefono == telefono);
+
+            if (usuario == null)
             {
-                query = query.Where(u => u.Email == email);
+                throw new("No se encontro un usuario con el dato proporcionado.");
+
             }
-
-
-
-            return await query.FirstOrDefaultAsync();
-
+            return usuario;
 
         }
     }

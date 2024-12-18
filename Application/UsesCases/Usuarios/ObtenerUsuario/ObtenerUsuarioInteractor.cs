@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
+using NPOI.SS.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,30 +20,30 @@ namespace Application.UsesCases.Usuarios.ObtenerUsuario
 
         public async Task<ObtenerUsuarioResponse> Handle(ObtenerUsuarioRequest obtenerUsuario)
         {
-            if (string.IsNullOrWhiteSpace(obtenerUsuario.Email) && string.IsNullOrWhiteSpace(obtenerUsuario.Telefono))
+            if (string.IsNullOrEmpty(obtenerUsuario.Email) && string.IsNullOrEmpty(obtenerUsuario.Telefono))
             {
                 return new ObtenerUsuarioResponse { Exito = false, Mensaje = "Ingrese el Email o el Telefono." };
 
             }
 
-            var usuario = await _usuarioRepositorio.ObtenerUsuarioAsync(obtenerUsuario.Email, obtenerUsuario.Telefono);
-
-            if (usuario == null)
+            var usuario = await _usuarioRepositorio.ObtenerUsuarioAsync(email: obtenerUsuario.Email, telefono: obtenerUsuario.Telefono);
+            if (usuario != null)
             {
-                return new ObtenerUsuarioResponse { Exito = false, Mensaje = "No se encontro un usuario con el dato proporcionado." };
+                return new ObtenerUsuarioResponse
+                {
+                    Exito = true,
+                    Nombre = usuario.Nombre,
+                    Apellido = usuario.Apellido,
+                    Telefono = usuario.Telefono,
+                    Direccion = usuario.Direccion,
+                    Email = usuario.Email,
+                    Rol = usuario.Rol
+
+                };
             }
 
-            return new ObtenerUsuarioResponse 
-            {
-                Exito = true, 
-                Nombre = usuario.Nombre,
-                Apellido = usuario.Apellido,
-                Telefono = usuario.Telefono,
-                Direccion = usuario.Direccion,
-                Email = usuario.Email,
-                Rol = usuario.Rol
-                
-            };
+            return new ObtenerUsuarioResponse { Exito = false, Mensaje = "No se encontro ningun usuario con el dato proporcionado." };
+
         }
     }
 }

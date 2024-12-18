@@ -13,21 +13,23 @@ namespace Application.UsesCases.Usuarios.EliminarUsuario
 
         public async Task<EliminarUsuarioResponse> Handle(EliminarUsuarioRequest eliminarUsuarioRequest)
         {
-            if(string.IsNullOrWhiteSpace(eliminarUsuarioRequest.Email))
+            if (string.IsNullOrEmpty(eliminarUsuarioRequest.Email) && string.IsNullOrEmpty(eliminarUsuarioRequest.Telefono))
             {
-                return new EliminarUsuarioResponse {Exito =false, Mensaje = "Debe ingresar un usuario valido." };
+                return new EliminarUsuarioResponse { Exito = false, Mensaje = "Debe ingresar un dato valido." };
             }
 
-            var usuario = await _usuarioRepositorio.ObtenerUsuarioAsync(eliminarUsuarioRequest.Email);
-
-            if(usuario == null)
+            try
             {
-                return new EliminarUsuarioResponse { Exito = false, Mensaje = "El usuario ingresado no existe." };
+
+                await _usuarioRepositorio.EliminarUsuarioAsync(eliminarUsuarioRequest.Email, eliminarUsuarioRequest.Telefono);
+                return new EliminarUsuarioResponse { Exito = true, Mensaje = "Usuario eliminado exitosamente." };
+
+            }
+            catch (Exception ex)
+            {
+                return new EliminarUsuarioResponse { Exito = false, Mensaje = $"Error al eliminar el usuario: {ex.Message}" };
             }
 
-            await _usuarioRepositorio.EliminarUsuarioAsync(usuario.Email);
-
-            return new EliminarUsuarioResponse {Exito = true, Mensaje = "Usuario eliminado exitosamente." };
         }
 
     }

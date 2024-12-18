@@ -21,27 +21,31 @@ namespace Application.UsesCases.Usuarios.RegistrarUsuario
 
         public async Task<RegistrarUsuarioResponse> Handle(RegistrarUsuarioRequest request)
         {
-            if(await _usuarioRepositorio.ObtenerUsuarioAsync(request.Email) != null)
+            try
             {
-                return new RegistrarUsuarioResponse { Exito = false, Mensaje = "El correo electónico ya existe." };
+                if (request == null) throw new ArgumentNullException("Ingrese datos validos", nameof(request));
+
+                var hashedPassword = _passwordHasher.HashPassword(request.Contraseña);
+
+                var nuevoUsuario = new Usuario
+                {
+                    Nombre = request.Nombre,
+                    Apellido = request.Apellido,
+                    Telefono = request.Telefono,
+                    Direccion = request.Direccion,
+                    Email = request.Email,
+                    Contraseña = hashedPassword,
+                    Rol = request.Rol
+                };
+
+                await _usuarioRepositorio.AgregarUsuarioAsync(nuevoUsuario);
+                return new RegistrarUsuarioResponse { Exito = true, Mensaje = "Usuario registrado exitosamente.", UsuarioId = nuevoUsuario.UsuarioId };
+            }
+            catch (Exception ex)
+            {
+                return new RegistrarUsuarioResponse { Exito = false, Mensaje = $"No se pudo registrar el usuario: {ex.Message}" };
             }
 
-            var hashedPassword = _passwordHasher.HashPassword(request.Contraseña);
-
-            var nuevoUsuario = new Usuario
-            {
-                Nombre = request.Nombre,
-                Apellido = request.Apellido,
-                Telefono = request.Telefono,
-                Direccion = request.Direccion,
-                Email = request.Email,
-                Contraseña = hashedPassword,
-                Rol = request.Rol
-            };
-
-            await _usuarioRepositorio.AgregarUsuarioAsync(nuevoUsuario);
-
-            return new RegistrarUsuarioResponse { Exito = true, Mensaje = "Usuario registrado exitosamente.",UsuarioId = nuevoUsuario.UsuarioId };
         }
     }
 }

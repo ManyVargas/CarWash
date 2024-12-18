@@ -9,5 +9,6 @@ namespace Application.UsesCases.Usuarios.EliminarUsuario
     public class EliminarUsuarioRequest
     {
         public string Email { get; set; }
+        public string Telefono { get; set; }
     }
 }

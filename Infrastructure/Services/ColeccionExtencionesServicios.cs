@@ -1,4 +1,6 @@
-﻿using Application.UsesCases.Usuarios.ObtenerUsuario;
+﻿using Application.UsesCases.Usuarios.ActualizarUsuario;
+using Application.UsesCases.Usuarios.EliminarUsuario;
+using Application.UsesCases.Usuarios.ObtenerUsuario;
 using Application.UsesCases.Usuarios.RegistrarUsuario;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -20,6 +22,8 @@ namespace Infrastructure.Extensions
             services.AddTransient<ObtenerUsuariosInteractor>();
             services.AddTransient<ObtenerUsuarioInteractor>();
             services.AddTransient<RegistrarUsuarioInteractor>();
+            services.AddTransient<EliminarUsuarioInteractor>();
+            services.AddTransient<ActualizarUsuarioInteractor>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 

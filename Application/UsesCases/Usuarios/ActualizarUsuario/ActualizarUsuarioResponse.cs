@@ -10,6 +10,5 @@ namespace Application.UsesCases.Usuarios.ActualizarUsuario
     {
         public bool Exito { get; set; }
         public string Mensaje { get; set; }
-        public int UsuarioId { get; set; }
     }
 }

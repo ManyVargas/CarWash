@@ -1,10 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.UsesCases.Usuarios.ActualizarUsuario
 {
@@ -22,28 +18,35 @@ namespace Application.UsesCases.Usuarios.ActualizarUsuario
         {
             if (usuarioRequest == null)
             {
-                return new ActualizarUsuarioResponse {Exito = false, Mensaje = "No se pudo actualizar la informacion del usuario"};
+                return new ActualizarUsuarioResponse { Exito = false, Mensaje = "Debe ingresar datos validos." };
             }
 
-            var viejoUsuario = await _usuarioRepositorio.ObtenerUsuarioAsync(usuarioRequest.Email);
+            var usuario = new Usuario
+            {
+                Nombre = usuarioRequest.Nombre,
+                Apellido = usuarioRequest.Apellido,
+                Telefono = usuarioRequest.Telefono,
+                Email = usuarioRequest.Email,
+                Direccion = usuarioRequest.Direccion,
+                Rol = usuarioRequest.Rol
+            };
 
-            if(viejoUsuario == null)
+            try
+            {
+                await _usuarioRepositorio.ActualizarUsuarioAsync(usuario);
+
+                return new ActualizarUsuarioResponse { Exito = true, Mensaje = "Usuario Actualizado exitosamente." };
+
+            }
+            catch (Exception ex)
             {
                 return new ActualizarUsuarioResponse
                 {
                     Exito = false,
-                    Mensaje = "No se encontro un usuario con el email proporcionado."
+                    Mensaje = $"Error al actualizar el usuario: {ex.Message}"
                 };
             }
 
-
-            await _usuarioRepositorio.ActualizarUsuarioAsync(viejoUsuario);
-
-            return new ActualizarUsuarioResponse
-            {
-                Exito = true,
-                Mensaje = "Usuario actualizado exitosamente."
-            };
         }
     }
 }
