@@ -1,0 +1,41 @@
+﻿@using Application.UsesCases.Usuarios.ObtenerUsuario
+@model IEnumerable<ObtenerUsuariosResponse>
+@{
+    ViewData["Title"] = "Usuarios";
+}
+
+<h1 class="h1 text-center my-5">Usuarios del sistema</h1>
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Acciones</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Telefono</th>
+                <th>Direccion</th>
+                <th>Email</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var usuario in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-primary">Editar</a>
+                        <a class="btn btn-danger">Borrar</a>
+                    </td>
+
+                    <td>@usuario.Nombre</td>
+                    <td>@usuario.Apellido</td>
+                    <td>@usuario.Telefono</td>
+                    <td>@usuario.Direccion</td>
+                    <td>@usuario.Email</td>
+                    <td>@usuario.Rol</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

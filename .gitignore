@@ -1,0 +1,22 @@
+# Archivos y carpetas generados por Visual Studio
+.vs/
+bin/
+obj/
+
+# Configuraciones locales del proyecto
+*.user
+*.suo
+appsettings.json
+appsettings.Development.json
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Certificados o claves
+*.pfx
+*.key
+
+# Dependencias locales
+node_modules/
+packages/
