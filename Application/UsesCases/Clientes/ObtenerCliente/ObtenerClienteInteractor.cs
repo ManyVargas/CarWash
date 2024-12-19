@@ -1,9 +1,5 @@
 ﻿using Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Application.UsesCases.Clientes.ObtenerCliente
 {
@@ -18,40 +14,40 @@ namespace Application.UsesCases.Clientes.ObtenerCliente
 
         public async Task<ObtenerClienteResponse> Handle(ObtenerClienteRequest obtenerClienteRequest)
         {
-            if (string.IsNullOrEmpty(obtenerClienteRequest.Email) && string.IsNullOrEmpty(obtenerClienteRequest.Telefono))
+            try
             {
-                return new ObtenerClienteResponse {Exito = false, Mensaje = "Debe introducir un Email o Telefono valido." };
-            }
+                if (string.IsNullOrEmpty(obtenerClienteRequest.Email) && string.IsNullOrEmpty(obtenerClienteRequest.Telefono))
+                {
+                    return new ObtenerClienteResponse {Exito = false, Mensaje = "Debe proporcionar un email o telefono valido."};
+                }
 
-            var clienteTelefono = await _clienteRepositorio.ObtenerClienteAsync(telefono: obtenerClienteRequest.Telefono);
-            if (clienteTelefono != null)
+                var cliente = await _clienteRepositorio.ObtenerClienteAsync(obtenerClienteRequest.Email, obtenerClienteRequest.Telefono);
+
+                if (cliente != null)
+                {
+                    return new ObtenerClienteResponse
+                    {
+                        Exito = true,
+                        Nombre = cliente.Nombre,
+                        Apellido = cliente.Apellido,
+                        Telefono = cliente.Telefono,
+                        Email = cliente.Email,
+                        Direccion = cliente.Direccion
+                    };
+                }
+
+                return new ObtenerClienteResponse {Exito = false, Mensaje = "Cliente no enccontrado." };
+
+            }
+            catch (Exception ex)
             {
                 return new ObtenerClienteResponse
                 {
-                    Exito = true,
-                    Nombre = clienteTelefono.Nombre,
-                    Apellido = clienteTelefono.Apellido,
-                    Telefono = clienteTelefono.Telefono,
-                    Email = clienteTelefono.Email,
-                    Direccion = clienteTelefono.Direccion
+                    Exito = false,
+                    Mensaje = $"Ocurrió un error al obtener el cliente: {ex.Message}"
                 };
             }
-
-            var clienteEmail = await _clienteRepositorio.ObtenerClienteAsync(email: obtenerClienteRequest.Email);
-            if (clienteEmail != null)
-            {
-                return new ObtenerClienteResponse 
-                { 
-                    Exito = true,
-                    Nombre = clienteEmail.Nombre,
-                    Apellido = clienteEmail.Apellido,
-                    Telefono = clienteEmail.Telefono,
-                    Email = clienteEmail.Email,
-                    Direccion = clienteEmail.Direccion
-                };
-            }
-
-            return new ObtenerClienteResponse { Exito = false, Mensaje = "No se encontró un cliente con el Email o Telefono proporcionado." };
+            
         }
     }
 }

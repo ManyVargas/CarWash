@@ -16,6 +16,6 @@ namespace Infrastructure.Data
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
-        public DbSet<Cliente> Cliente { get; set; }
+        public DbSet<Cliente> Clientes { get; set; }
     }
 }

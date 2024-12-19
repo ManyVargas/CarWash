@@ -19,29 +19,31 @@ namespace Application.UsesCases.Clientes.RegistrarCliente
 
         public async Task<RegistrarClienteResponse> Handle(RegistrarClienteRequest clienteRequest)
         {
-            if (clienteRequest == null)
+            try
             {
-                return new RegistrarClienteResponse { Exito = false, Mensaje = "Debe ingresar un cliente valido" };
+                if (clienteRequest == null)
+                {
+                    return new RegistrarClienteResponse { Exito = false, Mensaje = "Debe ingresar un cliente valido" };
+                }
+
+                var nuevoCliente = new Cliente
+                {
+                    Nombre = clienteRequest.Nombre,
+                    Apellido = clienteRequest.Apellido,
+                    Telefono = clienteRequest.Telefono,
+                    Direccion = clienteRequest.Direccion,
+                    Email = clienteRequest.Email
+                };
+
+                await _clienteRepositorio.AgregarClienteAsync(nuevoCliente);
+
+                return new RegistrarClienteResponse { Exito = true, Mensaje = "Cliente agregado exitosamente.", ClienteId = nuevoCliente.ClienteId };
             }
-
-            if (await _clienteRepositorio.ObtenerClienteAsync(telefono: clienteRequest.Telefono) == null
-                || await _clienteRepositorio.ObtenerClienteAsync(email: clienteRequest.Email) == null)
+            catch (Exception ex)
             {
-                return new RegistrarClienteResponse { Exito = false, Mensaje = "No se encontro un cliente con el dato proporcionado" };
+                return new RegistrarClienteResponse { Exito = false, Mensaje = $"Error inesperado al registrar el cliente: {ex.Message}" };
             }
-
-            var nuevoCliente = new Cliente
-            {
-                Nombre = clienteRequest.Nombre,
-                Apellido = clienteRequest.Apellido,
-                Telefono = clienteRequest.Telefono,
-                Direccion = clienteRequest.Direccion,
-                Email = clienteRequest.Email
-            };
-
-            await _clienteRepositorio.AgregarClienteAsync(nuevoCliente);
-
-            return new RegistrarClienteResponse { Exito = true, Mensaje = "Cliente agregado exitosamente.", ClienteId = nuevoCliente.ClienteId };
+            
         }
     }
 }

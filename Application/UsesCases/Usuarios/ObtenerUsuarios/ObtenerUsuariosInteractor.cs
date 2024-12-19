@@ -29,18 +29,16 @@ namespace Application.UsesCases.Usuarios.ObtenerUsuario
 
                 //Como devuelve un IEnumerable debemos utilizar funcion lambda para poder seleccionar
                 //cada registro y mapearlo a las propiedades del response
-                var response = usuarios.Select(u => new ObtenerUsuariosResponse
+                return usuarios.Select(u => new ObtenerUsuariosResponse
                 {
                     Nombre = u.Nombre,
                     Apellido = u.Apellido,
                     Email = u.Email,
                     Telefono = u.Telefono,
                     Direccion = u.Direccion,
-                    Rol = u.Rol,
-                    Contraseña = u.Contraseña
+                    Rol = u.Rol
                 });
 
-                return response;
 
             }
             catch (Exception ex)

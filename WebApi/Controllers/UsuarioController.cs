@@ -32,6 +32,7 @@ namespace WebApi.Controllers
             _eliminarUsuarioInteractor = eliminarUsuarioInteractor;
         }
 
+
         [HttpGet("todosUsuarios")]
         public async Task<ActionResult<IEnumerable<ObtenerUsuariosResponse>>> ObtenerTodosUsuarios()
         {
@@ -39,10 +40,10 @@ namespace WebApi.Controllers
             {
                 var usuarios = await _obtenerUsuariosInteractor.Handle();
 
-                if (usuarios == null)
-                {
-                    return NotFound("No hay usuarios para mostrar.");
-                }
+                //if (usuarios == null)
+                //{
+                //    return NotFound("No hay usuarios para mostrar.");
+                //}
 
                 return Ok(usuarios);
             }
@@ -112,7 +113,7 @@ namespace WebApi.Controllers
         
         }
 
-        [HttpPut("actualizarUsuario")]
+        [HttpPut("actualizar")]
         public async Task<IActionResult> ActualizarUsuario(ActualizarUsuarioRequest actualizarUsuarioRequest, string? telefono, string? email)
         {
             try
@@ -185,19 +186,6 @@ namespace WebApi.Controllers
                     return BadRequest("Debe proporcionar un teléfono o email para identificar al usuario.");
                 }
 
-                var obtenerUsuarioRequest = new ObtenerUsuarioRequest
-                {
-                    Telefono = telefono,
-                    Email = email
-                };
-
-
-                var usuarioExistente = await _obtenerUsuarioInteractor.Handle(obtenerUsuarioRequest);
-
-                if (usuarioExistente.Exito == false || usuarioExistente == null)
-                {
-                    return BadRequest(usuarioExistente?.Mensaje ?? "Usuario no encontrado.");
-                }
 
                 var eliminarUsuarioRequest = new EliminarUsuarioRequest
                 {

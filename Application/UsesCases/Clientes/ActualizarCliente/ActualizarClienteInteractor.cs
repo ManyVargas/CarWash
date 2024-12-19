@@ -15,37 +15,30 @@ namespace Application.UsesCases.Clientes.ActualizarCliente
 
         public async Task<ActualizarClienteResponse> Handle(ActualizarClienteRequest actualizarClienteRequest)
         {
-            if (string.IsNullOrEmpty(actualizarClienteRequest.Telefono))
+            if (actualizarClienteRequest == null)
             {
-                return new ActualizarClienteResponse { Exito = false, Mensaje = "Debe ingresar un telefono valido." };
+                return new ActualizarClienteResponse { Exito = false, Mensaje = "Debe ingresar datos validos." };
             }
 
-            //var cliente = await _clienteRepositorio.ObtenerClienteAsync(telefono: actualizarClienteRequest.Telefono);
-
-            //if (cliente == null)
-            //{
-            //    return new ActualizarClienteResponse { Exito = false, Mensaje = "No se encontro un cliente con ese telefono." };
-            //}
             var cliente = new Cliente
             {
-                Telefono = actualizarClienteRequest.Telefono
+                Nombre = actualizarClienteRequest.Nombre,
+                Apellido = actualizarClienteRequest.Apellido,
+                Telefono = actualizarClienteRequest.Telefono,
+                Direccion = actualizarClienteRequest.Direccion,
+                Email = actualizarClienteRequest.Email
             };
 
-            //cliente.Nombre = actualizarClienteRequest.Nombre ?? cliente.Nombre;
-            //cliente.Apellido = actualizarClienteRequest.Apellido ?? cliente.Apellido;
-            //cliente.Email = actualizarClienteRequest.Email ?? cliente.Email;
-            //cliente.Email = actualizarClienteRequest.Telefono ?? cliente.Telefono;
-            //cliente.Direccion = actualizarClienteRequest.Direccion ?? cliente.Direccion;
-
-
-            if (await _clienteRepositorio.ActualizarCliente(cliente))
+            try
             {
+                await _clienteRepositorio.ActualizarClienteAsync(cliente);
                 return new ActualizarClienteResponse { Exito = true, Mensaje = "Cliente actualizado exitosamente" };
             }
+            catch (Exception ex)
+            {
 
-
-
-            return new ActualizarClienteResponse { Exito = false, Mensaje = "Error al actualizar el cliente, intente de nuevo." };
+                return new ActualizarClienteResponse { Exito = false, Mensaje = $"Error al actualizar el cliente: {ex.Message}" };
+            }
 
         }
     }

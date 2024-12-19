@@ -11,6 +11,8 @@ namespace Core.Interfaces
     {
         Task AgregarClienteAsync(Cliente cliente);
         Task<Cliente> ObtenerClienteAsync(string email = null, string telefono = null);
-        Task<bool> ActualizarCliente(Cliente cliente);
+        Task ActualizarClienteAsync(Cliente cliente);
+        Task EliminarClienteAsync(string email = null, string telefono = null);
+        Task<IEnumerable<Cliente>> ObtenerTodosClientesAsync();
     }
 }

@@ -14,31 +14,30 @@ namespace Infrastructure.Data
             _context = context;
         }
 
-        public async Task<bool> ActualizarCliente(Cliente cliente)
+        public async Task ActualizarClienteAsync(Cliente cliente)
         {
             
             try
             {
-                var clienteExiste = await _context.Cliente.FirstOrDefaultAsync(c => c.Telefono == cliente.Telefono);
+                var clienteExistente = await _context.Clientes.FirstOrDefaultAsync(c => c.Telefono == cliente.Telefono || c.Email == cliente.Email);
 
-                if (clienteExiste == null)
+                if (clienteExistente == null)
                 {
-                    return false;
+                    throw new Exception("No se encontro un cliente con el dato proporcionado.");
                 }
 
-                clienteExiste.Nombre = cliente.Nombre;
-                clienteExiste.Apellido = cliente.Apellido;
-                clienteExiste.Telefono = cliente.Telefono;
-                clienteExiste.Email = cliente.Email;
-                clienteExiste.Direccion = cliente.Direccion;
+                clienteExistente.Nombre = cliente.Nombre ?? clienteExistente.Nombre;
+                clienteExistente.Apellido = cliente.Apellido ?? clienteExistente.Apellido;
+                clienteExistente.Telefono = cliente.Telefono ?? clienteExistente.Telefono;
+                clienteExistente.Email = cliente.Email ?? clienteExistente.Email;
+                clienteExistente.Direccion = cliente.Direccion ?? clienteExistente.Direccion;
 
-                _context.Cliente.Update(clienteExiste);
+                
                 await _context.SaveChangesAsync();
-                return true;
             }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Error inesperado: " + ex.Message);
+                throw new InvalidOperationException("Error inesperado al actualizar el cliente: " + ex.Message);
             }
         }
 
@@ -46,7 +45,12 @@ namespace Infrastructure.Data
         {
             try
             {
-                await _context.Cliente.AddAsync(cliente);
+                var existe = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == cliente.Email);
+                if (existe != null)
+                {
+                    throw new Exception("Ya existe un cliente con este correo electronico.");
+                }
+                await _context.Clientes.AddAsync(cliente);
                 await _context.SaveChangesAsync();
 
             }
@@ -60,29 +64,50 @@ namespace Infrastructure.Data
         {
             try
             {
-                //Verificar que haya uno de los dos datos presentes
-                if (string.IsNullOrWhiteSpace(email) && string.IsNullOrWhiteSpace(telefono))
-                    throw new ArgumentException("Debe proporcionar un email o teléfono para buscar el cliente.");
+                var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == email || c.Telefono == telefono);
 
-                //hacer la query dinamica
-                var query = _context.Cliente.AsQueryable();
-
-                if (!string.IsNullOrWhiteSpace(email))
+                if(cliente == null)
                 {
-                    query.Where(u => u.Email == email);
+                    throw new Exception("No se encontro ningun cliente con el dato proporcionado.");
                 }
 
-                if (!string.IsNullOrWhiteSpace(telefono))
-                {
-                    query.Where(u => u.Telefono == telefono);
-
-                }
-
-                return await query.FirstOrDefaultAsync();
+                return cliente;
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException("Error al consultar el cliente.", ex);
+            }
+        }
+
+        public async Task EliminarClienteAsync(string? email, string? telefono)
+        {
+            try
+            {
+                var cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Email == email || c.Telefono == telefono);
+
+                if (cliente == null)
+                {
+                    throw new Exception("No se encontro un cliente con el dato proporcionado.");
+                }
+
+                _context.Clientes.Remove(cliente);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException($"Error al intentar eliminar el cliente: {ex.Message}");
+            }
+        }
+
+        public async Task<IEnumerable<Cliente>> ObtenerTodosClientesAsync()
+        {
+            try
+            {
+                return await _context.Clientes.ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                throw new InvalidOperationException($"Error: {ex.Message}");
             }
         }
     }

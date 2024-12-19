@@ -9,7 +9,6 @@ namespace Core.Interfaces
         Task ActualizarUsuarioAsync(Usuario usuario);
         Task EliminarUsuarioAsync(string email = null, string telefono = null);
         Task<IEnumerable<Usuario>> ObtenerTodosUsuariosAsync(); 
-        //Task CambiarRoleAsync(string email);
         
     }
 }
