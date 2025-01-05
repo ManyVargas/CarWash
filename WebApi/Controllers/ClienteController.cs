@@ -3,10 +3,6 @@ using Application.UsesCases.Clientes.EliminarCliente;
 using Application.UsesCases.Clientes.ObtenerCliente;
 using Application.UsesCases.Clientes.ObtenerClientes;
 using Application.UsesCases.Clientes.RegistrarCliente;
-using Application.UsesCases.Usuarios.ActualizarUsuario;
-using Application.UsesCases.Usuarios.EliminarUsuario;
-using Application.UsesCases.Usuarios.ObtenerUsuario;
-using Application.UsesCases.Usuarios.RegistrarUsuario;
 using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 

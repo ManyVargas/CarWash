@@ -13,6 +13,6 @@ namespace Core.Entities
         public int UsuarioId { get; set; }
         public DateTime Fecha { get; set; }
         public decimal Total { get; set; }
-        public string MetodoPago { get; set; }
+        public string Metodo_Pago { get; set; }
     }
 }

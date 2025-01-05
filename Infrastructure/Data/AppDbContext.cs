@@ -19,6 +19,7 @@ namespace Infrastructure.Data
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Vehiculo> Vehiculos { get; set; }
         public DbSet<Servicio> Servicios { get; set; }
+        public DbSet<Factura> Facturas { get; set; }
 
     }
 }

@@ -3,6 +3,7 @@ using Application.UsesCases.Clientes.EliminarCliente;
 using Application.UsesCases.Clientes.ObtenerCliente;
 using Application.UsesCases.Clientes.ObtenerClientes;
 using Application.UsesCases.Clientes.RegistrarCliente;
+using Application.UsesCases.Facturas.GenerarFactura;
 using Application.UsesCases.Servicios.ActualizarServicio;
 using Application.UsesCases.Servicios.EliminarServicio;
 using Application.UsesCases.Servicios.ObtenerServicio;
@@ -30,7 +31,7 @@ namespace Infrastructure.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("MsiConnection")));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             //Servicios de Usuarios
@@ -64,7 +65,11 @@ namespace Infrastructure.Extensions
             services.AddTransient<RegistrarServicioInteractor>();
             services.AddTransient<ObtenerServicioInteractor>();
 
-
+            //Servicios de Facturas
+            services.AddScoped<IFacturaRepositorio, FacturaRepositorio>();
+            services.AddTransient<GenerarFacturaInteractor>();
+            services.AddTransient<GenerarFacturaRequest>();
+            services.AddTransient<GenerarFacturaResponse>();
             return services;
         }
     }
