@@ -13,7 +13,7 @@ namespace Infrastructure.Data
             _context = context;
         }
 
-        public async Task AgregarUsuarioAsync(Usuario usuario)
+        public async Task RegistrarUsuarioAsync(Usuario usuario)
         {
 
             try

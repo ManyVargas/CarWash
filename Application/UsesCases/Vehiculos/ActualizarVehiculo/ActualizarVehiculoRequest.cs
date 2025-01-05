@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Application.UsesCases.Vehiculos.ActualizarVehiculo
 {
-    public class Vehiculo
+    public class ActualizarVehiculoRequest
     {
-        public  int VehiculoId { get; set; }
-        public int ClienteId { get; set; }
         public string Marca { get; set; }
         public string Modelo { get; set; }
         public int Anio { get; set; }

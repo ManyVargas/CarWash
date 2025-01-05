@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Application.UsesCases.Servicios.ObtenerServicio
 {
-    public class Servicio
+    public class ObtenerServicioResponse
     {
-        public int ServicioId { get; set; }
+        public bool Exito { get; set; }
+        public string Mensaje { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public decimal Precio { get; set; }

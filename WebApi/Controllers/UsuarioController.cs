@@ -40,10 +40,6 @@ namespace WebApi.Controllers
             {
                 var usuarios = await _obtenerUsuariosInteractor.Handle();
 
-                //if (usuarios == null)
-                //{
-                //    return NotFound("No hay usuarios para mostrar.");
-                //}
 
                 return Ok(usuarios);
             }

@@ -3,10 +3,19 @@ using Application.UsesCases.Clientes.EliminarCliente;
 using Application.UsesCases.Clientes.ObtenerCliente;
 using Application.UsesCases.Clientes.ObtenerClientes;
 using Application.UsesCases.Clientes.RegistrarCliente;
+using Application.UsesCases.Servicios.ActualizarServicio;
+using Application.UsesCases.Servicios.EliminarServicio;
+using Application.UsesCases.Servicios.ObtenerServicio;
+using Application.UsesCases.Servicios.ObtenerServicios;
+using Application.UsesCases.Servicios.RegistrarServicio;
 using Application.UsesCases.Usuarios.ActualizarUsuario;
 using Application.UsesCases.Usuarios.EliminarUsuario;
 using Application.UsesCases.Usuarios.ObtenerUsuario;
 using Application.UsesCases.Usuarios.RegistrarUsuario;
+using Application.UsesCases.Vehiculos.ActualizarVehiculo;
+using Application.UsesCases.Vehiculos.ObtenerVehiculo;
+using Application.UsesCases.Vehiculos.ObtenerVehiculos;
+using Application.UsesCases.Vehiculos.RegistrarVehiculo;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
@@ -21,7 +30,7 @@ namespace Infrastructure.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("MsiConnection")));
             services.AddScoped<IPasswordHasher, PasswordHasher>();
 
             //Servicios de Usuarios
@@ -39,7 +48,21 @@ namespace Infrastructure.Extensions
             services.AddTransient<EliminarClienteInteractor>();
             services.AddTransient<ActualizarClienteInteractor>();
             services.AddTransient<ObtenerClientesInteractor>();
+            
+            //Servicios de Vehiculos
+            services.AddScoped<IVehiculoRepositorio, VehiculoRepositorio>();
+            services.AddTransient<ObtenerVehiculosInteractor>();
+            services.AddTransient<RegistrarVehiculoInteractor>();
+            services.AddTransient<ActualizarVehiculoInteractor>();
+            services.AddTransient<ObtenerVehiculoInteractor>();
 
+            //Servicios de Servicios
+            services.AddScoped<IServicioRepositorio, ServicioRepositorio>();
+            services.AddTransient<ObtenerServiciosInteractor>();
+            services.AddTransient<ActualizarServicioInteractor>();
+            services.AddTransient<EliminarServicioInteractor>();
+            services.AddTransient<RegistrarServicioInteractor>();
+            services.AddTransient<ObtenerServicioInteractor>();
 
 
             return services;

@@ -38,7 +38,7 @@ namespace Application.UsesCases.Usuarios.RegistrarUsuario
                     Rol = request.Rol
                 };
 
-                await _usuarioRepositorio.AgregarUsuarioAsync(nuevoUsuario);
+                await _usuarioRepositorio.RegistrarUsuarioAsync(nuevoUsuario);
                 return new RegistrarUsuarioResponse { Exito = true, Mensaje = "Usuario registrado exitosamente.", UsuarioId = nuevoUsuario.UsuarioId };
             }
             catch (Exception ex)

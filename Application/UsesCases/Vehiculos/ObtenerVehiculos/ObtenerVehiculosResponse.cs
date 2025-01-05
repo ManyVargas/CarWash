@@ -1,14 +1,14 @@
-﻿using System;
+﻿using Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Application.UsesCases.Vehiculos.ObtenerVehiculos
 {
-    public class Vehiculo
+    public class ObtenerVehiculosResponse
     {
-        public  int VehiculoId { get; set; }
         public int ClienteId { get; set; }
         public string Marca { get; set; }
         public string Modelo { get; set; }

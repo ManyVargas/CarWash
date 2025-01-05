@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Entities
+namespace Application.UsesCases.Servicios.ObtenerServicios
 {
-    public class Servicio
+    public class ObtenerServiciosResponse
     {
-        public int ServicioId { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
         public decimal Precio { get; set; }
