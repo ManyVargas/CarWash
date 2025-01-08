@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="NPOI" Version="2.7.2" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+    <PackageReference Include="Serilog.Sinks.MSSqlServer" Version="8.1.0" />
   </ItemGroup>
 
 </Project>

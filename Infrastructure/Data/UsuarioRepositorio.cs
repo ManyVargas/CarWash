@@ -43,7 +43,7 @@ namespace Infrastructure.Data
 
                 if (usuarioExistente == null)
                 {
-                    throw new Exception("No se encontro un usuario con el dato proporcionado.");
+                    throw new Exception("Usuario invalido.");
                 }
 
                 usuarioExistente.Nombre = usuario.Nombre ?? usuarioExistente.Nombre;
@@ -108,7 +108,7 @@ namespace Infrastructure.Data
 
             if (usuario == null)
             {
-                throw new("No se encontro un usuario con el dato proporcionado.");
+                throw new("Usuario invalido.");
 
             }
             return usuario;
