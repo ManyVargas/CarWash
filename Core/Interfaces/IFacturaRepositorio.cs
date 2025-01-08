@@ -10,5 +10,6 @@ namespace Core.Interfaces
     public interface IFacturaRepositorio
     {
         Task GenerarFactura(Factura factura);
+        Task GenerarDetalleFactura(DetalleFactura detalleFactura);
     }
 }

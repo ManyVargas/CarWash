@@ -20,6 +20,7 @@ namespace Infrastructure.Data
         public DbSet<Vehiculo> Vehiculos { get; set; }
         public DbSet<Servicio> Servicios { get; set; }
         public DbSet<Factura> Facturas { get; set; }
+        public DbSet<DetalleFactura> Detalles_Factura { get; set; }
 
     }
 }

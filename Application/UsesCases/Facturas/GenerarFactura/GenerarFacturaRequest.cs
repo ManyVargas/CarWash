@@ -18,6 +18,6 @@ namespace Application.UsesCases.Facturas.GenerarFactura
         public int UsuarioId { get; set; }
         //public Usuario Usuario { get; set; }
         public string Metodo_Pago { get; set; }
-        public decimal Total { get; set; }
+        public List<GenerarFacturaDetalleRequest> Detalles { get; set; }
     }
 }

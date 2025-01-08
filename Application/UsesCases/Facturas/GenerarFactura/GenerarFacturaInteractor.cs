@@ -14,12 +14,18 @@ namespace Application.UsesCases.Facturas.GenerarFactura
         private readonly IFacturaRepositorio _facturaRepositorio;
         private readonly IClienteRepositorio _clienteRepositorio;
         private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly IServicioRepositorio _servicioRepositorio;
 
-        public GenerarFacturaInteractor(IFacturaRepositorio facturaRepositorio, IClienteRepositorio clienteRepositorio, IUsuarioRepositorio usuarioRepositorio)
+        public GenerarFacturaInteractor(
+            IFacturaRepositorio facturaRepositorio, 
+            IClienteRepositorio clienteRepositorio, 
+            IUsuarioRepositorio usuarioRepositorio,
+            IServicioRepositorio servicioRepositorio)
         {
             _facturaRepositorio = facturaRepositorio;
             _clienteRepositorio = clienteRepositorio;
             _usuarioRepositorio = usuarioRepositorio;
+            _servicioRepositorio = servicioRepositorio;
         }
 
         public async Task<GenerarFacturaResponse> Handle(GenerarFacturaRequest generarFacturaRequest)
@@ -61,25 +67,51 @@ namespace Application.UsesCases.Facturas.GenerarFactura
                     };
                 }
 
-                if (generarFacturaRequest.Total <= 0)
+                
+
+                decimal subtotal = 0;
+
+                foreach( var servicio in generarFacturaRequest.Detalles )
                 {
-                    return new GenerarFacturaResponse
+                    if (servicio.Cantidad <= 0)
                     {
-                        Exito = false,
-                        Mensaje = "El total debe ser mayor a 0"
-                    };
+                        return new GenerarFacturaResponse
+                        {
+                            Exito = false,
+                            Mensaje = "Cantidad no válida en los detalles"
+                        };
+                    }
+                    var nombreServ = await _servicioRepositorio.ObtenerServicioAsync(servicio.NombreServicio);
+                    subtotal += nombreServ.Precio * servicio.Cantidad;
                 }
+
+                decimal impuesto = subtotal * 0.18m;
+                
 
                 var factura = new Factura
                 {
                     UsuarioId = generarFacturaRequest.UsuarioId,
                     ClienteId = generarFacturaRequest.ClienteId,
                     Fecha = DateTime.Now,
-                    Total = generarFacturaRequest.Total,
+                    Subtotal = subtotal,
+                    Total = subtotal + impuesto,
                     Metodo_Pago = generarFacturaRequest.Metodo_Pago
                 };
 
                 await _facturaRepositorio.GenerarFactura(factura);
+
+                foreach(var detalleRequest in generarFacturaRequest.Detalles)
+                {
+                    
+                    var detalleFactura = new DetalleFactura
+                    {
+                        FacturaId = factura.FacturaId,
+                        NombreServicio = detalleRequest.NombreServicio,
+                        Cantidad = detalleRequest.Cantidad
+                    };
+
+                    await _facturaRepositorio.GenerarDetalleFactura(detalleFactura);
+                }
 
                 return new GenerarFacturaResponse
                 {

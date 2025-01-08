@@ -30,5 +30,19 @@ namespace Infrastructure.Data
                 throw new Exception($"Error en el repositorio: {ex.Message}");
             }
         }
+
+        public async Task GenerarDetalleFactura(DetalleFactura detalleFactura)
+        {
+            try
+            {
+                await _context.Detalles_Factura.AddAsync(detalleFactura);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al guardar el detalle de la factura: {ex.Message}");
+            }
+        }
+
     }
 }
