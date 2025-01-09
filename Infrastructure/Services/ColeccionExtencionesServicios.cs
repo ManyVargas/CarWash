@@ -4,6 +4,7 @@ using Application.UsesCases.Clientes.ObtenerCliente;
 using Application.UsesCases.Clientes.ObtenerClientes;
 using Application.UsesCases.Clientes.RegistrarCliente;
 using Application.UsesCases.Facturas.GenerarFactura;
+using Application.UsesCases.Logs.RegistrarLog;
 using Application.UsesCases.Servicios.ActualizarServicio;
 using Application.UsesCases.Servicios.EliminarServicio;
 using Application.UsesCases.Servicios.ObtenerServicio;
@@ -47,7 +48,6 @@ namespace Infrastructure.Extensions
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.Console()
                 .WriteTo.MSSqlServer(
                     connectionString: configuration.GetConnectionString("DefaultConnection"),
                     sinkOptions: new MSSqlServerSinkOptions
@@ -110,6 +110,10 @@ namespace Infrastructure.Extensions
             services.AddTransient<LoginUsuarioRequest>();
             services.AddTransient<LoginUsuarioInteractor>();
             services.AddTransient<LoginUsuarioResponse>();
+
+            //Servicios de Logs
+            services.AddScoped<ILogRepositorio, LogRepositorio>();
+            services.AddTransient<RegistrarLogInteractor>();
 
             return services;
         }

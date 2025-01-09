@@ -1,4 +1,5 @@
 ﻿using Application.UsesCases.Clientes.RegistrarCliente;
+using Application.UsesCases.Logs.RegistrarLog;
 using Application.UsesCases.Servicios.ActualizarServicio;
 using Application.UsesCases.Servicios.EliminarServicio;
 using Application.UsesCases.Servicios.ObtenerServicio;
@@ -19,31 +20,37 @@ namespace WebApi.Controllers
         private readonly EliminarServicioInteractor _eliminarServicioInteractor;
         private readonly RegistrarServicioInteractor _registrarServicioInteractor;
         private readonly ObtenerServicioInteractor _obtenerServicioInteractor;
+        private readonly RegistrarLogInteractor _registrarLog;
 
         public ServicioController(ObtenerServiciosInteractor obtenerServiciosInteractor,
             ActualizarServicioInteractor actualizarServicioInteractor,
             EliminarServicioInteractor eliminarServicioInteractor,
             RegistrarServicioInteractor registrarServicioInteractor,
-            ObtenerServicioInteractor obtenerServicioInteractor)
+            ObtenerServicioInteractor obtenerServicioInteractor,
+            RegistrarLogInteractor registrarLog)
         {
             _obtenerServiciosInteractor = obtenerServiciosInteractor;
             _actualizarServicioInteractor = actualizarServicioInteractor;
             _eliminarServicioInteractor = eliminarServicioInteractor;
             _registrarServicioInteractor = registrarServicioInteractor;
             _obtenerServicioInteractor = obtenerServicioInteractor;
+            _registrarLog = registrarLog;
         }
 
         [HttpGet("todosServicios")]
         public async Task<ActionResult<IEnumerable<ObtenerServiciosResponse>>> ObtenerTodosServicios()
         {
+            await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzaron a obtener todos los servicios.");
             try
             {
                 var servicios = await _obtenerServiciosInteractor.Handle();
 
+                await _registrarLog.Handle("Information", nameof(ServicioController), "Se obtuvieron todos los servicios correctamente.");
                 return Ok(servicios);
             }
             catch (Exception ex)
             {
+                await _registrarLog.Handle("Error", nameof(ServicioController), "Error al obtener todos los servicios.", ex.Message);
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
@@ -52,19 +59,23 @@ namespace WebApi.Controllers
         [HttpPost("agregar")]
         public async Task<IActionResult> RegistrarServicio(RegistrarServicioRequest request)
         {
+            await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzo con el registro de un servicio.");
             try
             {
                 if (request == null)
                 {
+                    await _registrarLog.Handle("Warning", nameof(ServicioController), "Se ingresaron datos invalidos para registrar un servicio.");
                     return BadRequest("Ingrese datos validos.");
                 }
 
                 var registrarServicioResponse = await _registrarServicioInteractor.Handle(request);
 
+                await _registrarLog.Handle("Information", nameof(ServicioController), "Se registro un servicio correctamente.");
                 return Ok(registrarServicioResponse);
             }
             catch (Exception ex)
             {
+                await _registrarLog.Handle("Error", nameof(ServicioController), "Error al intentar registrar un servicio.", ex.Message);
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
@@ -72,10 +83,12 @@ namespace WebApi.Controllers
         [HttpPut("actualizar")]
         public async Task<IActionResult> ActualizarServicio(ActualizarServicioRequest request, string nombre)
         {
+            await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzo con la actualizacion de un servicio.");
             try
             {
                 if(request == null || string.IsNullOrEmpty(nombre))
                 {
+                    await _registrarLog.Handle("Warning", nameof(ServicioController), "Se ingreso un nombre no valido para la actualizacion del servicio.");
                     return BadRequest("Debe proporcionar un nombre valido.");
                 }
 
@@ -88,6 +101,7 @@ namespace WebApi.Controllers
 
                 if(servicioExiste == null || servicioExiste.Exito == false)
                 {
+                    await _registrarLog.Handle("Warning", nameof(ServicioController), $"No se encontro un servicio con el nombre: {nombre}.");
                     return BadRequest(servicioExiste?.Mensaje ?? "Servicio no encontrado");
                 }
 
@@ -111,10 +125,12 @@ namespace WebApi.Controllers
                     return BadRequest(response.Mensaje);
                 }
 
+                await _registrarLog.Handle("Information", nameof(ServicioController), "Se actualizo un servicio correctamente.");
                 return Ok(response);
             }
             catch (Exception ex)
             {
+                await _registrarLog.Handle("Error", nameof(ServicioController), "Error al actualizar un servicio.", ex.Message);
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
@@ -122,10 +138,12 @@ namespace WebApi.Controllers
         [HttpDelete("eliminar")]
         public async Task<IActionResult> EliminarServicio(string nombre)
         {
+            await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzo a eliminar un servicio.");
             try
             {
                 if (string.IsNullOrEmpty(nombre))
                 {
+                    await _registrarLog.Handle("Warning", nameof(ServicioController), "Se introdujo un nombre no valido para eliminar un servicio.");
                     return BadRequest("Debe proporcionar un nombre valido.");
                 }
 
@@ -141,10 +159,12 @@ namespace WebApi.Controllers
                     return BadRequest(response?.Mensaje ?? "Servicio no encontrado");
                 }
 
+                await _registrarLog.Handle("Information", nameof(ServicioController), "Servicio eliminado correctamente.");
                 return Ok(response);
             }
             catch(Exception ex)
             {
+                await _registrarLog.Handle("Error", nameof(ServicioController), "Error al intentar eliminar un servicio.", ex.Message);
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }

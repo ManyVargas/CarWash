@@ -21,6 +21,7 @@ namespace Infrastructure.Data
         public DbSet<Servicio> Servicios { get; set; }
         public DbSet<Factura> Facturas { get; set; }
         public DbSet<DetalleFactura> Detalles_Factura { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
     }
 }

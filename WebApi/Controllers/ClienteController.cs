@@ -3,7 +3,9 @@ using Application.UsesCases.Clientes.EliminarCliente;
 using Application.UsesCases.Clientes.ObtenerCliente;
 using Application.UsesCases.Clientes.ObtenerClientes;
 using Application.UsesCases.Clientes.RegistrarCliente;
+using Application.UsesCases.Logs.RegistrarLog;
 using Core.Entities;
+using Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -17,7 +19,7 @@ namespace WebApi.Controllers
         private readonly EliminarClienteInteractor _eliminarClienteInteractor;
         private readonly ObtenerClientesInteractor _obtenerClientesInteractor;
         private readonly ObtenerClienteInteractor _obtenerClienteInteractor;
-        private readonly ILogger _logger;
+        private readonly RegistrarLogInteractor _registrarLog;
 
         public ClienteController(
             RegistrarClienteInteractor registrarClienteInteractor,
@@ -25,31 +27,31 @@ namespace WebApi.Controllers
             EliminarClienteInteractor eliminarClienteInteractor,
             ObtenerClientesInteractor obtenerClientesInteractor,
             ObtenerClienteInteractor obtenerClienteInteractor,
-            ILogger<ClienteController> logger)
+            RegistrarLogInteractor registrarLog)
         {
             _registrarClienteInteractor = registrarClienteInteractor;
             _actualizarClienteInteractor = actualizarClienteInteractor;
             _eliminarClienteInteractor = eliminarClienteInteractor;
             _obtenerClientesInteractor = obtenerClientesInteractor;
             _obtenerClienteInteractor = obtenerClienteInteractor;
-            _logger = logger;
+            _registrarLog = registrarLog;
         }
 
 
         [HttpGet("todosClientes")]
         public async Task<ActionResult<IEnumerable<ObtenerClientesResponse>>> ObtenerTodosClientes()
         {
-            _logger.LogInformation("Iniciando la busqueda de todos los clientes.");
+            await _registrarLog.Handle("Information", nameof(ClienteController), "Iniciando la busqueda de todos los clientes.");
             try
             {
                 var clientes = await _obtenerClientesInteractor.Handle();
-                
-                _logger.LogInformation("Clientes encontrados correctamente.");
+
+                await _registrarLog.Handle("Information", nameof(ClienteController), "Clientes encontrados correctamente.");
                 return Ok(clientes);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al buscar los clientes.");
+                await _registrarLog.Handle("Error", nameof(ClienteController), "Error al buscar los clientes.",ex.Message);
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
@@ -59,15 +61,15 @@ namespace WebApi.Controllers
         {
             if (!string.IsNullOrEmpty(telefono))
             {
-                _logger.LogInformation("Iniciando la búsqueda del cliente con número: {Numero}", telefono);
+                await _registrarLog.Handle("Information", nameof(ClienteController), $"Iniciando la búsqueda del cliente con número: {telefono}");
             }
             else if (!string.IsNullOrEmpty(email))
             {
-                _logger.LogInformation("Iniciando la búsqueda del cliente con correo: {Correo}", email);
+                await _registrarLog.Handle("Information", nameof(ClienteController), $"Iniciando la búsqueda del cliente con correo: {email}");
             }
             else
             {
-                _logger.LogWarning("No se proporcionó ni número ni correo para la búsqueda del cliente.");
+                await _registrarLog.Handle("Error", nameof(ClienteController), "No se proporcionó ni número ni correo para la búsqueda del cliente.");
             }
 
             try
@@ -91,13 +93,13 @@ namespace WebApi.Controllers
                     return NotFound(cliente.Mensaje);
                 }
 
-                _logger.LogInformation("Cliente enccontrado correctamente");
+                await _registrarLog.Handle("Information", nameof(ClienteController), "Cliente enccontrado correctamente.");
                 return Ok(cliente);
 
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al buscar el cliente.");
+                await _registrarLog.Handle("Error", nameof(ClienteController), "Error al buscar el cliente.", ex.Message);
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
@@ -105,7 +107,8 @@ namespace WebApi.Controllers
         [HttpPost("agregar")]
         public async Task<IActionResult> AgregarCliente(RegistrarClienteRequest registrarClienteRequest)
         {
-            _logger.LogInformation("Comenzando a agregar un cliente.");
+            //_logger.LogInformation("Comenzando a agregar un cliente.");
+            await _registrarLog.Handle("Information", nameof(ClienteController), "Comenzando a agregar un cliente.");
             try
             {
                 if (registrarClienteRequest == null)
@@ -120,12 +123,12 @@ namespace WebApi.Controllers
                     return BadRequest(registrarClienteResponse.Mensaje);
                 }
 
-                _logger.LogInformation("Cliente agregado correctamente.");
+                await _registrarLog.Handle("Information", nameof(ClienteController), "Cliente agregado correctamente.");
                 return Ok(registrarClienteResponse);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al agregar el cliente.");
+                await _registrarLog.Handle("Error", nameof(ClienteController), "Error al agregar el cliente.", ex.Message);
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
@@ -133,7 +136,7 @@ namespace WebApi.Controllers
         [HttpPut("actualizar")]
         public async Task<IActionResult> ActualizarCliente(ActualizarClienteRequest actualizarClienteRequest, string? telefono, string? email)
         {
-            _logger.LogInformation("Comenzando a actualizar un cliente.");
+            await _registrarLog.Handle("Information", nameof(ClienteController), "Comenzando a actualizar un cliente.");
             try
             {
 
@@ -184,12 +187,12 @@ namespace WebApi.Controllers
                     return BadRequest(response.Mensaje);
                 }
 
-                _logger.LogInformation("Cliente actualizado correctamente.");
+                await _registrarLog.Handle("Information", nameof(ClienteController), "Cliente actualizado correctamente.");
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar el cliente.");
+                await _registrarLog.Handle("Error", nameof(ClienteController), "Error al actualizar el cliente.", ex.Message);
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
@@ -197,7 +200,7 @@ namespace WebApi.Controllers
         [HttpDelete("eliminar")]
         public async Task<IActionResult> EliminarCliente(string? telefono, string? email)
         {
-            _logger.LogInformation("Comenzando a eliminar un cliente.");
+            await _registrarLog.Handle("Information", nameof(ClienteController), "Comenzando a eliminar un cliente.");
             try
             {
                 if (string.IsNullOrWhiteSpace(telefono) && string.IsNullOrWhiteSpace(email))
@@ -219,12 +222,12 @@ namespace WebApi.Controllers
                     return BadRequest($"{response.Mensaje}");
                 }
 
-                _logger.LogInformation("Cliente eliminado correctamente.");
+                await _registrarLog.Handle("Information", nameof(ClienteController), "Cliente eliminado correctamente.");
                 return Ok(response);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al eliminar el cliente.");
+                await _registrarLog.Handle("Error", nameof(ClienteController), "Error al eliminar el cliente.", ex.Message);
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
