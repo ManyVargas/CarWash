@@ -21,10 +21,12 @@ using Application.UsesCases.Vehiculos.ObtenerVehiculos;
 using Application.UsesCases.Vehiculos.RegistrarVehiculo;
 using Core.Interfaces;
 using Infrastructure.Data;
+using Infrastructure.Frameworks.RabbitMQ;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RabbitMQ.Client;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
@@ -46,26 +48,26 @@ namespace Infrastructure.Extensions
                 }
             };
 
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.MSSqlServer(
-                    connectionString: configuration.GetConnectionString("DefaultConnection"),
-                    sinkOptions: new MSSqlServerSinkOptions
-                    {
-                        TableName = "Logs",
-                        AutoCreateSqlTable = false
-                    },
-                    columnOptions: columnOptions,
-                    restrictedToMinimumLevel: LogEventLevel.Information
-                )
-                .CreateLogger();
+            //Log.Logger = new LoggerConfiguration()
+                //.MinimumLevel.Debug()
+                //.WriteTo.MSSqlServer(
+                //    connectionString: configuration.GetConnectionString("MSI"),
+                //    sinkOptions: new MSSqlServerSinkOptions
+                //    {
+                //        TableName = "Logs",
+                //        AutoCreateSqlTable = false
+                //    },
+                //    columnOptions: columnOptions,
+                //    restrictedToMinimumLevel: LogEventLevel.Information
+                //)
+                //.CreateLogger();
 
             // Registrar Serilog como el sistema de logging principal
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
 
             // Configuración de base de datos
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(configuration.GetConnectionString("MsiConnection")));
 
             services.AddScoped<IPasswordHasher, PasswordHasher>();
 
@@ -114,6 +116,21 @@ namespace Infrastructure.Extensions
             //Servicios de Logs
             services.AddScoped<ILogRepositorio, LogRepositorio>();
             services.AddTransient<RegistrarLogInteractor>();
+
+            //Configuracion de RabbitMq
+            var factory = new ConnectionFactory
+            {
+                HostName = "localhost", // Cambia por tu configuración
+                //Port = 15672,            // Puerto por defecto
+                UserName = "guest",     // Usuario por defecto
+                Password = "guest"      // Contraseña por defecto
+            };
+
+            var connection = factory.CreateConnection();
+
+            services.AddSingleton<IConnection>(connection);
+            services.AddSingleton<IPublicadorMensajes, RabbitMqPublicador>();
+            services.AddSingleton<ISuscriptorMensajes, RabbitMqSuscriptor>();
 
             return services;
         }
