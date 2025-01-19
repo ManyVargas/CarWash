@@ -1,5 +1,9 @@
+using FluentAssertions.Common;
 using Infrastructure.Extensions;
-using Serilog;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +16,52 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
 
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Key")),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role", // Asegura que reconoce el claim de rol
+            NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+        };
+    });
+
+builder.Services.AddAuthorization(options =>
+    {
+        options.AddPolicy("AdminPolicy", policy =>
+            policy.RequireRole("Administrador"));
+    });
+
+
+builder.Services.AddAuthorization();
+
+
 var app = builder.Build();
+
+
+app.Use(async (context, next) =>
+{
+    await next();
+
+    if (context.Response.StatusCode == 403)
+    {
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsync("{\"message\": \"Debe iniciar sesión como administrador para realizar esta acción.\"}");
+    }
+    else if (context.Response.StatusCode == 401)
+    {
+        context.Response.ContentType = "application/json";
+        await context.Response.WriteAsync("{\"message\": \"Debe iniciar sesión para acceder a esta acción.\"}");
+    }
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

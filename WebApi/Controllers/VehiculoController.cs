@@ -4,6 +4,7 @@ using Application.UsesCases.Vehiculos.ObtenerVehiculo;
 using Application.UsesCases.Vehiculos.ObtenerVehiculos;
 using Application.UsesCases.Vehiculos.RegistrarVehiculo;
 using Core.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -46,6 +47,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("registrar")]
+        [Authorize]
         public async Task<IActionResult> RegistrarVehiculo(RegistrarVehiculoRequest registrarVehiculoRequest)
         {
             try
@@ -71,6 +73,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("actualizar")]
+        [Authorize]
         public async Task<IActionResult> ActualizarVehiculo(ActualizarVehiculoRequest actualizarVehiculoRequest, string placa)
         {
             try

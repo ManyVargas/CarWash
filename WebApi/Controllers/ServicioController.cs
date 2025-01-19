@@ -5,6 +5,7 @@ using Application.UsesCases.Servicios.EliminarServicio;
 using Application.UsesCases.Servicios.ObtenerServicio;
 using Application.UsesCases.Servicios.ObtenerServicios;
 using Application.UsesCases.Servicios.RegistrarServicio;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
@@ -57,6 +58,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost("agregar")]
+        [Authorize]
         public async Task<IActionResult> RegistrarServicio(RegistrarServicioRequest request)
         {
             await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzo con el registro de un servicio.");
@@ -81,6 +83,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("actualizar")]
+        [Authorize]
         public async Task<IActionResult> ActualizarServicio(ActualizarServicioRequest request, string nombre)
         {
             await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzo con la actualizacion de un servicio.");
@@ -136,6 +139,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("eliminar")]
+        [Authorize]
         public async Task<IActionResult> EliminarServicio(string nombre)
         {
             await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzo a eliminar un servicio.");

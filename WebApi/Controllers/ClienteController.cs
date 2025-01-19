@@ -6,6 +6,7 @@ using Application.UsesCases.Clientes.RegistrarCliente;
 using Application.UsesCases.Logs.RegistrarLog;
 using Core.Entities;
 using Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -105,6 +106,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("agregar")]
+        [Authorize]
         public async Task<IActionResult> AgregarCliente(RegistrarClienteRequest registrarClienteRequest)
         {
             //_logger.LogInformation("Comenzando a agregar un cliente.");
@@ -134,6 +136,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("actualizar")]
+        [Authorize]
         public async Task<IActionResult> ActualizarCliente(ActualizarClienteRequest actualizarClienteRequest, string? telefono, string? email)
         {
             await _registrarLog.Handle("Information", nameof(ClienteController), "Comenzando a actualizar un cliente.");
@@ -198,6 +201,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("eliminar")]
+        [Authorize]
         public async Task<IActionResult> EliminarCliente(string? telefono, string? email)
         {
             await _registrarLog.Handle("Information", nameof(ClienteController), "Comenzando a eliminar un cliente.");

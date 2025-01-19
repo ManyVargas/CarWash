@@ -4,6 +4,7 @@ using Application.UsesCases.Usuarios.EliminarUsuario;
 using Application.UsesCases.Usuarios.ObtenerUsuario;
 using Application.UsesCases.Usuarios.RegistrarUsuario;
 using Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -83,6 +84,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("agregar")]
+        [Authorize]
         public async Task<IActionResult> AgregarUsuario(RegistrarUsuarioRequest registrarUsuarioRequest)
         {
             try
@@ -110,6 +112,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("actualizar")]
+        [Authorize]
         public async Task<IActionResult> ActualizarUsuario(ActualizarUsuarioRequest actualizarUsuarioRequest, string? telefono, string? email)
         {
             try
@@ -173,6 +176,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("eliminar")]
+        [Authorize(Roles = "Administrador")]
         public async Task<IActionResult> EliminarUsuario(string? telefono, string? email)
         {
             try
