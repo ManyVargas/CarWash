@@ -1,10 +1,5 @@
 ﻿using Core.Entities;
 using Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.UsesCases.Clientes.RegistrarCliente
 {
@@ -26,7 +21,7 @@ namespace Application.UsesCases.Clientes.RegistrarCliente
                     return new RegistrarClienteResponse { Exito = false, Mensaje = "Debe ingresar un cliente valido" };
                 }
 
-                var nuevoCliente = new Cliente
+                var cliente = new Cliente
                 {
                     Nombre = clienteRequest.Nombre,
                     Apellido = clienteRequest.Apellido,
@@ -35,9 +30,10 @@ namespace Application.UsesCases.Clientes.RegistrarCliente
                     Email = clienteRequest.Email
                 };
 
-                await _clienteRepositorio.AgregarClienteAsync(nuevoCliente);
+                await _clienteRepositorio.AgregarClienteAsync(cliente);
 
-                return new RegistrarClienteResponse { Exito = true, Mensaje = "Cliente agregado exitosamente.", ClienteId = nuevoCliente.ClienteId };
+
+                return new RegistrarClienteResponse { Exito = true, Mensaje = "Cliente agregado exitosamente.", ClienteId = cliente.ClienteId };
             }
             catch (Exception ex)
             {

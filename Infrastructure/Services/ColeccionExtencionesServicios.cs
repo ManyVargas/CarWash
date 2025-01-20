@@ -20,56 +20,64 @@ using Application.UsesCases.Vehiculos.ObtenerVehiculo;
 using Application.UsesCases.Vehiculos.ObtenerVehiculos;
 using Application.UsesCases.Vehiculos.RegistrarVehiculo;
 using Core.Interfaces;
+using FluentAssertions.Common;
 using Infrastructure.Data;
-using Infrastructure.Frameworks.RabbitMQ;
+using Infrastructure.Frameworks.Authentication;
 using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
 using System.Collections.ObjectModel;
-
+using System.Data;
+using System.Reflection;
 namespace Infrastructure.Extensions
 {
     public static class ColeccionExtencionesServicios
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            // Configuración de Serilog
+            // configuración de serilog
             var columnOptions = new ColumnOptions
             {
                 AdditionalColumns = new Collection<SqlColumn>
                 {
-                    new SqlColumn("Origen", System.Data.SqlDbType.NVarChar) { DataLength = 100 }, // Tamaño de 100 caracteres
-                    new SqlColumn("Excepcion", System.Data.SqlDbType.NVarChar) { DataLength = -1 }
+                    new SqlColumn("origen", SqlDbType.NVarChar) { DataLength = 100 },
+                    new SqlColumn("excepcion", SqlDbType.NVarChar) { DataLength = -1 }
                 }
             };
 
-            //Log.Logger = new LoggerConfiguration()
-                //.MinimumLevel.Debug()
-                //.WriteTo.MSSqlServer(
-                //    connectionString: configuration.GetConnectionString("MSI"),
-                //    sinkOptions: new MSSqlServerSinkOptions
-                //    {
-                //        TableName = "Logs",
-                //        AutoCreateSqlTable = false
-                //    },
-                //    columnOptions: columnOptions,
-                //    restrictedToMinimumLevel: LogEventLevel.Information
-                //)
-                //.CreateLogger();
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.MSSqlServer(
+                    connectionString: configuration.GetConnectionString("DefaultConnection"),
+                    sinkOptions: new MSSqlServerSinkOptions
+                    {
+                        TableName = "Logs",
+                        AutoCreateSqlTable = false
+                    },
+                    columnOptions: columnOptions,
+                    restrictedToMinimumLevel: LogEventLevel.Information
+                )
+                .CreateLogger();
 
             // Registrar Serilog como el sistema de logging principal
             services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
 
             // Configuración de base de datos
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("MsiConnection")));
+                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+            // Configuración de base de datos backup
+            //services.AddDbContext<BackUpDbContext>(options =>
+                //options.UseSqlServer(configuration.GetConnectionString("BackupConnection")));
+
+
+            //Servicio de Hashear contraseñas
             services.AddScoped<IPasswordHasher, PasswordHasher>();
+
 
             // Servicios de Usuarios
             services.AddScoped<IUsuarioRepositorio, UsuarioRepositorio>();
@@ -117,20 +125,19 @@ namespace Infrastructure.Extensions
             services.AddScoped<ILogRepositorio, LogRepositorio>();
             services.AddTransient<RegistrarLogInteractor>();
 
-            //Configuracion de RabbitMq
-            var factory = new ConnectionFactory
+
+            //Servicio de JwtToken
+            // 1) Mapeo de JwtSettings a la sección "Jwt"
+            services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
+            // 2) Registrar la clase que implementa IJwtTokenGenerator
+            services.AddScoped<IJwtToken, JwtTokenGenerator>();
+            services.AddMediatR(config =>
             {
-                HostName = "localhost", // Cambia por tu configuración
-                //Port = 15672,            // Puerto por defecto
-                UserName = "guest",     // Usuario por defecto
-                Password = "guest"      // Contraseña por defecto
-            };
+                // Registra uno o varios assemblies
+                config.RegisterServicesFromAssemblies(typeof(LoginUsuarioRequest).Assembly);
+            });
 
-            var connection = factory.CreateConnection();
 
-            services.AddSingleton<IConnection>(connection);
-            services.AddSingleton<IPublicadorMensajes, RabbitMqPublicador>();
-            services.AddSingleton<ISuscriptorMensajes, RabbitMqSuscriptor>();
 
             return services;
         }

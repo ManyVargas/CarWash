@@ -8,6 +8,7 @@ namespace Infrastructure.Data
     public class ClienteRepositorio : IClienteRepositorio
     {
         private readonly AppDbContext _context;
+        
 
         public ClienteRepositorio(AppDbContext context)
         {

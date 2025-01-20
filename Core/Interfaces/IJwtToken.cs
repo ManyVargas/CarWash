@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces
 {
-    public interface IPublicadorMensajes
+    public interface IJwtToken
     {
-        Task PublicarAsync<T>(string topic, T message);
+        string GenerarToken(string userId, string userName, string role);
     }
 }
