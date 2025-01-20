@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\img\arrow-down.png" />
+    <Content Remove="wwwroot\img\car-polish-1-1.png" />
+    <Content Remove="wwwroot\img\car-wash-1-1.png" />
+    <Content Remove="wwwroot\img\car-wash-3-1.png" />
+    <Content Remove="wwwroot\img\freepik-upload-56412-1.png" />
+    <Content Remove="wwwroot\img\image-2.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.3.3" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.34" />
@@ -22,6 +31,17 @@
     <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\WebApi\WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\css\globals.css" />
+    <None Include="wwwroot\css\style.css" />
+    <None Include="wwwroot\img\arrow-down.png" />
+    <None Include="wwwroot\img\car-polish-1-1.png" />
+    <None Include="wwwroot\img\car-wash-1-1.png" />
+    <None Include="wwwroot\img\car-wash-3-1.png" />
+    <None Include="wwwroot\img\freepik-upload-56412-1.png" />
+    <None Include="wwwroot\img\image-2.png" />
   </ItemGroup>
 
 </Project>

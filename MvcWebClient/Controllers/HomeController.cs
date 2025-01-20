@@ -23,6 +23,11 @@ namespace MvcWebClient.Controllers
             return View();
         }
 
+        public IActionResult Usuarios()
+        {
+            return View("~/Views/Login/index.cshtml");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

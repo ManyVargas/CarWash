@@ -1,8 +1,79 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = null;
+   
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<link href="~/css/style.css" rel="stylesheet" type="text/css" />
+<link href="~/css/globals.css" rel="stylesheet" type="text/css" />
+
+<header class="headernav">
+    <a href="#home" class="Logo">Car Wash</a>
+
+    <nav class="navprincipal">
+        <a href="#servicios" class="active">Servicios</a>
+        <a href="#nosotros">Nosotros</a>
+        <a asp-controller="Home" asp-action="Usuarios">ModoAdmin</a>
+    </nav>
+</header>
+
+<section id="home">
+    <div class="div">
+        <div class="overlap">
+            <p class="m-s-que-limpio-lo">Más que limpio, lo dejamos<br />impecable.</p>
+            <a href="#nosotros">
+                <img class="arrow-down" src="~/img/arrow-down.png" />
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="nosotros">
+    <div class="NosotrosFrame">
+        <div class="overlap-group">
+            <div class="rectangle"></div>
+            <img class="image" src="~/img/image-2.png" />
+        </div>
+
+        <div class="text-wrapper">Nosotros:</div>
+        <p class="p">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+            magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+            est laborum.
+        </p>
+    </div>
+</section>
+
+<section id="servicios" class="serviciosec">
+    <div class="serviciosFrame">
+        <div class="overlap-2">
+            <div class="text-wrapper-2">Servicios:</div>
+            <div class="sencillo-hover">
+                <div class="text-wrapper-3">Lavado sencillo</div>
+                <img class="car-wash" src="~/img/car-wash-1-1.png" />
+            </div>
+
+            <div class="premium-hover">
+                <div class="text-wrapper-3">Lavado Premium</div>
+                <img class="img" src="~/img/car-wash-3-1.png" />
+            </div>
+
+            <div class="vip-hover">
+                <div class="text-wrapper-3">Lavado VIP</div>
+                <img class="car-polish" src="~/img/car-polish-1-1.png" />
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <div class="text-wrapper-4">Contactanos: example@gmail.com</div>
+    <div class="text-wrapper-5">Car Wash</div>
+    <div class="text-wrapper-6">Preguntas Frecuentes</div>
+    <p class="text-wrapper-7">Copyright © 2024 Example.com. All Rights Reserved.</p>
+</footer>
+
+
+<script src="~/js/script.js"></script>

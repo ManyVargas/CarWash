@@ -1,0 +1,302 @@
+﻿
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap');
+
+
+
+
+.headernav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 120px;
+    background-color: #f6f1f1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+}
+
+.Logo {
+    top: 36px;
+    left: 119px;
+    font-family: "Raleway", Helvetica;
+    font-weight: 800;
+    color: #146c94;
+    font-size: 42px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.navprincipal a {
+    top: 0;
+    left: 24px;
+    padding-left: 24px;
+    font-weight: 700;
+    color: #146c94;
+    font-size: 26px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+    transition: .3s;
+}
+
+    .navprincipal a:hover {
+        color: #19a7ce;
+    }
+
+.div {
+    background-color: #ffffff;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: 0;
+}
+
+.overlap {
+    position: relative;
+    width: 100%;
+    height: 880px;
+    top: 80px;
+    left: 0px;
+    background-image: url(../img/image-1.png);
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.m-s-que-limpio-lo {
+    position: absolute;
+    top: 266px;
+    left: 336px;
+    font-family: "Raleway-Bold", Helvetica;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 96px;
+    text-align: center;
+    letter-spacing: 0;
+    line-height: normal;
+}
+
+.arrow-down {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 748px;
+    left: 935px;
+}
+
+
+.text-wrapper {
+    position: absolute;
+    top: 250px;
+    left: 113px;
+    font-family: "Raleway-Bold", Helvetica;
+    font-weight: 700;
+    color: #146c94;
+    font-size: 96px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.Usuariosh2 {
+    position: absolute;
+    top: 50px;
+    left: 80px;
+    font-family: "Raleway-Bold", Helvetica;
+    font-weight: 700;
+    color: #146c94;
+    font-size: 64px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.Ventash2 {
+    position: absolute;
+    top: 50px;
+    left: 80px;
+    font-family: "Raleway-Bold", Helvetica;
+    font-weight: 700;
+    color: #146c94;
+    font-size: 64px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.usuariostabl {
+    position: absolute;
+    top: 150px;
+    left: 80px;
+    border-collapse: collapse;
+    width: 90%;
+}
+
+    .usuariostabl th {
+        border: 1px solid #19a7ce;
+        font-weight: 800;
+        color: #ffffff;
+        font-size: 26px;
+        text-align: left;
+        padding: 20px;
+        background-color: #146c94;
+    }
+
+    .usuariostabl td {
+        border: 1px solid #19a7ce;
+        font-weight: 700;
+        color: #19a7ce;
+        padding: 10px;
+        font-size: 20px;
+        background-color: #f5f5f5;
+    }
+
+.ventastabl {
+    position: absolute;
+    top: 150px;
+    left: 80px;
+    border-collapse: collapse;
+    width: 90%;
+}
+
+.ventastabl th {
+    border: 1px solid #19a7ce;
+    font-weight: 800;
+    color: #ffffff;
+    font-size: 26px;
+    text-align: left;
+    padding: 20px;
+    background-color: #146c94;
+}
+
+.ventastabl td {
+    border: 1px solid #19a7ce;
+    font-weight: 700;
+    color: #19a7ce;
+    padding: 10px;
+    font-size: 20px;
+    background-color: #f5f5f5;
+}
+
+.ventasFrame {
+    position: relative;
+    width: 100%;
+    height: 936px;
+    top: 0px;
+    left: 0;
+}
+
+
+.usuariosFrame {
+    position: relative;
+    width: 100%;
+    height: 936px;
+    top: 0px;
+    left: 0;
+}
+
+.ventasec {
+    position: relative;
+}
+
+
+.footer {
+    position: relative;
+    width: 1920px;
+    height: 120px;
+    top: 0px;
+    left: 1px;
+    background-color: #f6f1f1;
+}
+
+
+.nav {
+    position: fixed;
+    width: 1920px;
+    height: 120px;
+    top: 0;
+    left: 0;
+    background-color: #f6f1f1;
+}
+
+.btn-edit {
+    position: absolute;
+    top: 72px;
+    padding: 5px 15px;
+    background-color: #146c94;
+    color: #ffffff;
+    transition: .3s;
+}
+
+.btn-edit:hover{
+    background-color:#19a7ce;
+}
+
+.btn-borrar {
+    position: absolute;
+    padding: 5px 15px;
+    top: 72px;
+    left: 135px;
+    background-color: #9d0404;
+    color: #ffffff;
+    transition: .3s;
+}
+
+.btn-borrar:hover{
+    background-color: #bf2727;
+}
+
+.text-wrapper-4 {
+    position: absolute;
+    top: 47px;
+    left: 593px;
+    font-family: "Raleway-Bold", Helvetica;
+    font-weight: 700;
+    color: #146c94;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.text-wrapper-5 {
+    position: absolute;
+    top: 32px;
+    left: 78px;
+    font-family: "Raleway-Bold", Helvetica;
+    font-weight: 700;
+    color: #146c94;
+    font-size: 36px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.text-wrapper-6 {
+    position: absolute;
+    top: 47px;
+    left: 1028px;
+    font-family: "Raleway-Bold", Helvetica;
+    font-weight: 700;
+    color: #146c94;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: normal;
+    white-space: nowrap;
+}
+
+.text-wrapper-7 {
+    position: absolute;
+    top: 44px;
+    left: 1342px;
+    font-family: "Raleway-Bold", Helvetica;
+    font-weight: 700;
+    color: #146c94;
+    font-size: 20px;
+    letter-spacing: 0;
+    line-height: 30px;
+    white-space: nowrap;
+}

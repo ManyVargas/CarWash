@@ -1,0 +1,77 @@
+﻿@using Application.UsesCases.Usuarios.ObtenerUsuario
+@model IEnumerable<ObtenerUsuariosResponse>
+@{
+    Layout = null;
+   
+
+}
+
+<link href="~/css/adminstyle.css" rel="stylesheet" type="text/css" />
+<link href="~/css/globals.css" rel="stylesheet" type="text/css" />
+
+<header class="headernav">
+    <a href="#home" class="Logo">Car Wash</a>
+
+    <nav class="navprincipal">
+        <a href="#usuarios" class="active">Usuarios</a>
+    </nav>
+</header>
+
+<section id="home">
+    <div class="div">
+        <div class="overlap">
+            <p class="m-s-que-limpio-lo">Más que limpio, lo dejamos<br />impecable.</p>
+            <a href="#nosotros">
+                <img class="arrow-down" src="~/img/arrow-down.png" />
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="usuarios">
+    <div class="usuariosFrame">
+        <h2 class="Usuariosh2">Usuarios:</h2>
+        <table class="usuariostabl">
+            <thead>
+                <tr>
+                    <th>Acciones</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                    <th>Email</th>
+                    <th>Rol</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var usuario in Model)
+                {
+                    <tr>
+                        <td>
+                            <a href="#ventas" class="btn-edit">Editar</a>
+                            <a href="usuarios" class="btn-borrar">Borrar</a>
+                        </td>
+
+                        <td>@usuario.Nombre</td>
+                        <td>@usuario.Apellido</td>
+                        <td>@usuario.Telefono</td>
+                        <td>@usuario.Direccion</td>
+                        <td>@usuario.Email</td>
+                        <td>@usuario.Rol</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<footer class="footer">
+    <div class="text-wrapper-4">Contactanos: example@gmail.com</div>
+    <div class="text-wrapper-5">Car Wash</div>
+    <div class="text-wrapper-6">Preguntas Frecuentes</div>
+    <p class="text-wrapper-7">Copyright © 2024 Example.com. All Rights Reserved.</p>
+</footer>
+
+
+<script src="~/js/script.js"></script>
