@@ -1,0 +1,21 @@
+﻿@using Application.UsesCases.Usuarios.LoginUsuario
+@model LoginUsuarioRequest
+@{
+    ViewData["Title"] = "Login";
+    var usuario = new LoginUsuarioRequest();
+}
+
+<div class="container-fluid">
+
+    <form asp-controller="Login" asp-action="LoginFormSubmit">
+        <h1>@ViewData["Title"]</h1>
+        <label asp-for=Email></label>
+        <input type="email" id="email" name="email" placeholder="Ingresa tu email" required />
+
+        <label asp-for=Contraseña></label>
+        <input type="password" id="contraseña" name="contraseña" placeholder="Ingresa tu contraseña" required />
+
+        <button type="submit">Entrar</button>
+    </form>
+
+</div>

@@ -84,7 +84,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("agregar")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> AgregarUsuario(RegistrarUsuarioRequest registrarUsuarioRequest)
         {
             try

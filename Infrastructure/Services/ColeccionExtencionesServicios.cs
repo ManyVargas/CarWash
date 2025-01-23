@@ -52,7 +52,7 @@ namespace Infrastructure.Extensions
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.MSSqlServer(
-                    connectionString: configuration.GetConnectionString("DefaultConnection"),
+                    connectionString: configuration.GetConnectionString("MsiConnection"),
                     sinkOptions: new MSSqlServerSinkOptions
                     {
                         TableName = "Logs",
@@ -68,7 +68,7 @@ namespace Infrastructure.Extensions
 
             // Configuración de base de datos
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(configuration.GetConnectionString("MsiConnection")));
 
             // Configuración de base de datos backup
             //services.AddDbContext<BackUpDbContext>(options =>

@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BrillaCar CarWash</title>
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/css/site.css")" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/WebApplicationMVC.styles.css")" asp-append-version="true" />
+    <link href="@Url.Content("~/img/Brillacar-Logo.png")" rel="icon" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid ">
+                <a class="navbar-brand mx-5" asp-area="" asp-controller="Home" asp-action="Index"><img src="@Url.Content("~/img/Brillacar-Logo.png")" alt="Logo BrillaCar" style="width:100px; height:80px"/></a>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1 justify-content-end fs-4 mx-5">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-dark p-0" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item mx-2 ">
+                            <a class="nav-link text-dark p-0" asp-area="" asp-controller="Home" asp-action="Servicios">Servicios</a>
+                        </li>
+                        <li class="nav-item mx-2 ">
+                            <a class="nav-link text-dark p-0" asp-area="" asp-controller="Home" asp-action="Privacy">Contáctos</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 BrillaCar. Todos los derechos reservados. - <a asp-area="" asp-controller="Home" asp-action="Privacy">Servicios</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

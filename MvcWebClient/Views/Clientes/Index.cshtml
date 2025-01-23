@@ -1,0 +1,95 @@
+﻿@using Application.UsesCases.Clientes.ObtenerClientes
+@model IEnumerable<ObtenerClientesResponse>
+@{
+    ViewData["Title"] = "Administracion de Clientes";
+    Layout = null;
+
+}
+
+@*<link href="~/css/adminstyle.css" rel="stylesheet" type="text/css" />
+<link href="~/css/globals.css" rel="stylesheet" type="text/css" />*@
+
+<header class="headernav">
+    <a href="#home" class="Logo">Car Wash</a>
+
+    <nav class="navprincipal">
+        <a href="#usuarios" class="active">Usuarios</a>
+    </nav>
+</header>
+@* 
+<section id="home">
+    <div class="div">
+        <div class="overlap">
+            <p class="m-s-que-limpio-lo">Más que limpio, lo dejamos<br />impecable.</p>
+            <a href="#nosotros">
+                <img class="arrow-down" src="~/img/arrow-down.png" />
+            </a>
+        </div>
+    </div>
+</section>
+
+<section id="usuarios">
+        <h2 class="h1">Clientes:</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Acciones</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Telefono</th>
+                    <th>Direccion</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cliente in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary">Editar</a>
+                            <a href="#usuarios" class="btn btn-danger">Borrar</a>
+                        </td>
+
+                        <td>@cliente.Nombre</td>
+                        <td>@cliente.Apellido</td>
+                        <td>@cliente.Telefono</td>
+                        <td>@cliente.Direccion</td>
+                        <td>@cliente.Email</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+</section> *@
+
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Acciones</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Telefono</th>
+                <th>Direccion</th>
+                <th>Email</th>
+                <th>Rol</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var usuario in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-primary">Editar</a>
+                        <a class="btn btn-danger">Borrar</a>
+                    </td>
+
+                    <td>@usuario.Nombre</td>
+                    <td>@usuario.Apellido</td>
+                    <td>@usuario.Telefono</td>
+                    <td>@usuario.Direccion</td>
+                    <td>@usuario.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
