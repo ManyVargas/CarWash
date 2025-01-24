@@ -4,6 +4,38 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div class="text-center">
-    <h1>Hola <b>@ViewData["Nombre"]</b>, bienvenido al modo @ViewData["Rol"]</h1>
-</div>
+<section class="bg-dark text-light p-5 p-lg-0 pt-lg-5 mt-3 text-center text-sm-star w-100">
+
+    <h1 class="text-center">Hola <b>@ViewData["Nombre"]</b>, bienvenido al modo @ViewData["Rol"]</h1>
+    <div class="container p-2">
+        
+            <h1>Es hora de dar el <span class="text-primary text-center"> mejor </span> servicio</h1>
+            
+
+        
+    </div>
+    
+</section>
+
+<section id="conocenos" class="p-5">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-md">
+                <img src="~/img/lavando-carro.jpg" class="img-fluid" alt="" />
+            </div>
+            <div class="col-md p-5">
+                <h2>Recuerda @ViewData["Nombre"]</></h2>
+                <p class="lead">
+                   "En BrillaCar, cada auto que llega no es solo un vehículo, es una oportunidad para demostrar nuestra pasión por la excelencia. 
+                    Eres el motor que impulsa este lugar, transformando el día de nuestros clientes con tu dedicación y esfuerzo.
+                    Recuerda, no solo lavas autos, 
+                    haces que cada cliente se lleve brillo, 
+                    confianza y una experiencia única. ¡Sigue dejando huella, administrador de BrillaCar!"
+
+                </p>
+
+            </div>
+        </div>
+    </div>
+</section>
+
