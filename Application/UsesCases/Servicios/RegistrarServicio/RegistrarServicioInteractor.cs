@@ -34,7 +34,7 @@ namespace Application.UsesCases.Servicios.RegistrarServicio
                     };
                 }
 
-                if(registrarServicioRequest.Precio < 0)
+                if(decimal.Parse(registrarServicioRequest.Precio) < 0)
                 {
                     return new RegistrarServicioResponse
                     {
@@ -43,7 +43,7 @@ namespace Application.UsesCases.Servicios.RegistrarServicio
                     };
                 }
 
-                if (registrarServicioRequest.DuracionMinutos < 0)
+                if (int.Parse(registrarServicioRequest.DuracionMinutos) < 0)
                 {
                     return new RegistrarServicioResponse
                     {
@@ -56,8 +56,8 @@ namespace Application.UsesCases.Servicios.RegistrarServicio
                 {
                     Nombre = registrarServicioRequest.Nombre,
                     Descripcion = registrarServicioRequest.Descripcion,
-                    DuracionMinutos = registrarServicioRequest.DuracionMinutos,
-                    Precio = registrarServicioRequest.Precio
+                    DuracionMinutos = int.Parse(registrarServicioRequest.DuracionMinutos),
+                    Precio = decimal.Parse(registrarServicioRequest.Precio)
                 };
 
                 await _servicioRepositorio.RegistrarServicioAsync(servicio);

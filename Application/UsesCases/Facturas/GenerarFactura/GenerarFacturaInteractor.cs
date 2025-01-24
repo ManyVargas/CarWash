@@ -90,8 +90,8 @@ namespace Application.UsesCases.Facturas.GenerarFactura
 
                 var factura = new Factura
                 {
-                    UsuarioId = generarFacturaRequest.UsuarioId,
-                    ClienteId = generarFacturaRequest.ClienteId,
+                    UsuarioNombre = usuario.Nombre +" " + usuario.Apellido,
+                    ClienteNombre = cliente.Nombre + " " + cliente.Apellido,
                     Fecha = DateTime.Now,
                     Subtotal = subtotal,
                     Total = subtotal + impuesto,

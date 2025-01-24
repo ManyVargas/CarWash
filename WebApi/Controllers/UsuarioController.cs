@@ -112,8 +112,8 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("actualizar")]
-        [Authorize]
-        public async Task<IActionResult> ActualizarUsuario(ActualizarUsuarioRequest actualizarUsuarioRequest, string? telefono, string? email)
+        //[Authorize]
+        public async Task<IActionResult> ActualizarUsuario([FromBody]ActualizarUsuarioRequest actualizarUsuarioRequest, [FromQuery]string? telefono, [FromQuery] string? email)
         {
             try
             {
@@ -176,8 +176,8 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("eliminar")]
-        [Authorize(Roles = "Administrador")]
-        public async Task<IActionResult> EliminarUsuario(string? telefono, string? email)
+        //[Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> EliminarUsuario([FromQuery] string? email, [FromQuery] string? telefono)
         {
             try
             {
@@ -186,21 +186,20 @@ namespace WebApi.Controllers
                     return BadRequest("Debe proporcionar un teléfono o email para identificar al usuario.");
                 }
 
-
-                var eliminarUsuarioRequest = new EliminarUsuarioRequest
+                var request = new EliminarUsuarioRequest
                 {
                     Email = email,
                     Telefono = telefono
                 };
 
-                var response = await _eliminarUsuarioInteractor.Handle(eliminarUsuarioRequest);
+                var response = await _eliminarUsuarioInteractor.Handle(request);
 
-                if (response.Exito == false)
+                if (response == null || !response.Exito)
                 {
-                    return BadRequest($"{response.Mensaje}");
+                    return BadRequest(new { Mensaje = response?.Mensaje ?? "Usuario no encontrado." });
                 }
 
-                return Ok(response);
+                return Ok(new { Mensaje = "Usuario eliminado correctamente." });
             }
             catch (Exception ex)
             {

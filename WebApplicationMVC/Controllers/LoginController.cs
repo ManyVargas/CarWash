@@ -1,4 +1,5 @@
 ﻿using Application.UsesCases.Usuarios.LoginUsuario;
+using Core.Entities;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -43,9 +44,12 @@ namespace WebApplicationMVC.Controllers
                     // Deserializar el JSON en un objeto de respuesta
                     var loginResponse = JsonConvert.DeserializeObject<LoginUsuarioResponse>(responseString);
 
+                    HttpContext.Session.SetString("NombreUsuario", loginResponse.Nombre);
+                    HttpContext.Session.SetString("RolUsuario", loginResponse.Rol);
+                    HttpContext.Session.SetInt32("IdUsuario", loginResponse.UsuarioID);
 
                     // Retornar la respuesta a la vista o al cliente
-                    return RedirectToAction("AdminHome", "Admin", new {id = loginResponse.UsuarioID, nombre = loginResponse.Nombre}); ;
+                    return RedirectToAction("AdminHome", "Admin", new {id = loginResponse?.UsuarioID, nombre = loginResponse?.Nombre, rol = loginResponse?.Rol}); ;
                 }
                 else
                 {
@@ -57,6 +61,8 @@ namespace WebApplicationMVC.Controllers
             }
             catch (Exception ex)
             {
+                TempData["ToastMessage"] = $"Ocurrió un error inesperado: {ex.Message}";
+                TempData["ToastType"] = "error";
                 // Manejar excepciones
                 return RedirectToAction("LoginFormView");
             }

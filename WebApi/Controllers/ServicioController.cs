@@ -58,7 +58,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost("agregar")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> RegistrarServicio(RegistrarServicioRequest request)
         {
             await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzo con el registro de un servicio.");
@@ -72,6 +72,13 @@ namespace WebApi.Controllers
 
                 var registrarServicioResponse = await _registrarServicioInteractor.Handle(request);
 
+                if(registrarServicioResponse.Exito == false)
+                {
+                    await _registrarLog.Handle("Warning", nameof(ServicioController), "Error al agregar un servicio.");
+
+                    return BadRequest("No se pudo agregar el servicio.");
+                }
+
                 await _registrarLog.Handle("Information", nameof(ServicioController), "Se registro un servicio correctamente.");
                 return Ok(registrarServicioResponse);
             }
@@ -83,13 +90,13 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("actualizar")]
-        [Authorize]
-        public async Task<IActionResult> ActualizarServicio(ActualizarServicioRequest request, string nombre)
+        //[Authorize]
+        public async Task<IActionResult> ActualizarServicio([FromBody] ActualizarServicioRequest request)
         {
             await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzo con la actualizacion de un servicio.");
             try
             {
-                if(request == null || string.IsNullOrEmpty(nombre))
+                if(request == null || string.IsNullOrEmpty(request.Nombre))
                 {
                     await _registrarLog.Handle("Warning", nameof(ServicioController), "Se ingreso un nombre no valido para la actualizacion del servicio.");
                     return BadRequest("Debe proporcionar un nombre valido.");
@@ -97,31 +104,19 @@ namespace WebApi.Controllers
 
                 var obtenerServicioRequest = new ObtenerServicioRequest
                 {
-                    Nombre = nombre
+                    Nombre = request.Nombre
                 };
 
                 var servicioExiste = await _obtenerServicioInteractor.Handle(obtenerServicioRequest);
 
                 if(servicioExiste == null || servicioExiste.Exito == false)
                 {
-                    await _registrarLog.Handle("Warning", nameof(ServicioController), $"No se encontro un servicio con el nombre: {nombre}.");
+                    await _registrarLog.Handle("Warning", nameof(ServicioController), $"No se encontro un servicio con el nombre: {request.Nombre}.");
                     return BadRequest(servicioExiste?.Mensaje ?? "Servicio no encontrado");
                 }
 
-                var servicioExistenteNuevo = new ActualizarServicioRequest
-                {
-                    Nombre = servicioExiste.Nombre,
-                    Descripcion = servicioExiste.Descripcion,
-                    Precio = servicioExiste.Precio,
-                    DuracionMinutos = servicioExiste.DuracionMinutos
-                };
-
-                servicioExistenteNuevo.Nombre = nombre ?? request.Nombre;
-                servicioExistenteNuevo.Descripcion = request.Descripcion;
-                servicioExistenteNuevo.Precio = request.Precio;
-                servicioExistenteNuevo.DuracionMinutos = request.DuracionMinutos;
-
-                var response = await _actualizarServicioInteractor.Handle(servicioExistenteNuevo);
+                
+                var response = await _actualizarServicioInteractor.Handle(request);
 
                 if(response.Exito == false)
                 {
@@ -138,9 +133,9 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpDelete("eliminar")]
-        [Authorize]
-        public async Task<IActionResult> EliminarServicio(string nombre)
+        [HttpDelete("eliminar/{nombre}")]
+        //[Authorize]
+        public async Task<IActionResult> EliminarServicio([FromRoute]string nombre)
         {
             await _registrarLog.Handle("Information", nameof(ServicioController), "Se comenzo a eliminar un servicio.");
             try
@@ -164,11 +159,41 @@ namespace WebApi.Controllers
                 }
 
                 await _registrarLog.Handle("Information", nameof(ServicioController), "Servicio eliminado correctamente.");
-                return Ok(response);
+                return Ok(new { mensaje = $"El servicio '{nombre}' se eliminó correctamente." });
             }
             catch(Exception ex)
             {
                 await _registrarLog.Handle("Error", nameof(ServicioController), "Error al intentar eliminar un servicio.", ex.Message);
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
+
+        [HttpGet("{nombre}")]
+        public async Task<ActionResult<ObtenerServicioResponse>> ObtenerServicio([FromRoute]string nombre)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(nombre))
+                {
+                    return BadRequest("Debe proporcionar un nombre para buscar el servicio.");
+                }
+
+                var obtenerServicio = new ObtenerServicioRequest
+                {
+                    Nombre = nombre
+                };
+
+                var servicio = await _obtenerServicioInteractor.Handle(obtenerServicio);
+
+                if(servicio.Exito == false)
+                {
+                    return NotFound(servicio.Mensaje);
+                }
+
+                return Ok(servicio);
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }

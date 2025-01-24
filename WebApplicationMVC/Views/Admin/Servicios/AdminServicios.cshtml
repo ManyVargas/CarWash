@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Application.UsesCases.Servicios.ObtenerServicios.ObtenerServiciosResponse>
+@{
+    ViewData["Title"] = "Admin Servicios";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
+        <a class="btn btn-primary me-md-2" asp-controller="Admin" asp-action="RegistrarServicio">Agregar Servicio</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Acciones</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Duración</th>
+                <th scope="col">Precio</th>
+
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+
+            @foreach (var servicio in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="ServicioView" asp-action="ActualizarServicio" asp-route-nombre="@servicio.Nombre">Editar</a>
+                        <a class="btn btn-danger" asp-controller="ServicioView" asp-action="EliminarServicio" asp-route-nombre="@servicio.Nombre">Borrar</a>
+                    </td>
+                    <td>@servicio.Nombre</td>
+                    <td>@servicio.Descripcion</td>
+                    <td>@servicio.DuracionMinutos.ToString() minutos</td>
+                    <td>RD$ @servicio.Precio.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
+

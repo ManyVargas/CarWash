@@ -66,7 +66,7 @@ namespace Infrastructure.Data
             try
             {
 
-                var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email || u.Telefono == telefono); ;
+                var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email || u.Telefono == telefono);
 
                 if (usuario == null)
                 {

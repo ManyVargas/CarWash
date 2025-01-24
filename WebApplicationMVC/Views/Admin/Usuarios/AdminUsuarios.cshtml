@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Application.UsesCases.Usuarios.ObtenerUsuario.ObtenerUsuariosResponse>
+@{
+    ViewData["Title"] = "Admin Usuarios";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
+        <a class="btn btn-primary me-md-2" asp-controller="UsuarioView" asp-action="RegistrarUsuario">Agregar Usuario</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Acciones</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Email</th>
+                <th scope="col">Rol</th>
+
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+
+            @foreach (var usuario in Model)
+            {
+                <tr>
+                    <td>
+                        <a 
+                            class="btn btn-primary" 
+                            asp-controller="UsuarioView" 
+                            asp-action="ActualizarUsuario" 
+                            asp-route-email="@usuario.Email" 
+                            asp-route-telefono="@usuario.Telefono"
+                        >Editar</a>
+
+                        <a 
+                            class="btn btn-danger" 
+                            asp-controller="UsuarioView" 
+                            asp-action="EliminarUsuario" 
+                            asp-route-email="@usuario.Email" 
+                            asp-route-telefono="@usuario.Telefono"
+                        >Borrar</a>
+                    </td>
+                    <td>@usuario.Nombre</td>
+                    <td>@usuario.Apellido</td>
+                    <td>@usuario.Telefono</td>
+                    <td>@usuario.Email</td>
+                    <td>@usuario.Rol</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
+

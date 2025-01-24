@@ -47,21 +47,21 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 
-app.Use(async (context, next) =>
-{
-    await next();
+//app.Use(async (context, next) =>
+//{
+//    await next();
 
-    if (context.Response.StatusCode == 403)
-    {
-        context.Response.ContentType = "application/json";
-        await context.Response.WriteAsync("{\"message\": \"Debe iniciar sesión como administrador para realizar esta acción.\"}");
-    }
-    else if (context.Response.StatusCode == 401)
-    {
-        context.Response.ContentType = "application/json";
-        await context.Response.WriteAsync("{\"message\": \"Debe iniciar sesión para acceder a esta acción.\"}");
-    }
-});
+//    if (context.Response.StatusCode == 403)
+//    {
+//        context.Response.ContentType = "application/json";
+//        await context.Response.WriteAsync("{\"message\": \"Debe iniciar sesión como administrador para realizar esta acción.\"}");
+//    }
+//    else if (context.Response.StatusCode == 401)
+//    {
+//        context.Response.ContentType = "application/json";
+//        await context.Response.WriteAsync("{\"message\": \"Debe iniciar sesión para acceder a esta acción.\"}");
+//    }
+//});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
