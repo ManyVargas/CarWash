@@ -36,6 +36,8 @@ namespace WebApplicationMVC.Controllers
                 // Enviar solicitud POST a la API
                 var response = await _client.PostAsync(url, content);
 
+
+
                 if(response.IsSuccessStatusCode)
                 {
                     // Leer el contenido de la respuesta como JSON
@@ -55,7 +57,10 @@ namespace WebApplicationMVC.Controllers
                 {
                     // Manejar errores de la API
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    return BadRequest(new { message = "Error en la autenticación", details = errorContent });
+                    //return BadRequest(new { message = "Error en la autenticación", details = errorContent });
+                    TempData["ToastMessage"] = $"Credenciales Invalidas, intente de nuevo.";
+                    TempData["ToastType"] = "error";
+                    return View("LoginFormView", loginUsuarioRequest);
                 }
 
             }
