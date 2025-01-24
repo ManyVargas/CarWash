@@ -19,7 +19,16 @@ html {
 
 body {
     margin-bottom: 60px;
+    padding: 0px;
+    width: 100%;
 }
+
+    body:before {
+        display: block;
+        content: '';
+        height: 60px;
+    }
+
 
 form {
     background-color: #343a40; /* Fondo oscuro */
@@ -34,54 +43,55 @@ form {
 
 
 
-form input[type="text"],
-form input[type="email"],
-form input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ced4da; /* Borde gris claro */
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: #495057; /* Fondo oscuro del input */
-    color: #ffffff; /* Texto blanco */
-    transition: border-color 0.3s ease-in-out;
-}
 
-form input[type="text"]:focus,
-form input[type="email"]:focus,
-form input[type="password"]:focus {
-    border-color: #17a2b8; /* Azul claro al enfocar */
-    outline: none;
-    box-shadow: 0 0 5px rgba(23, 162, 184, 0.5); /* Sombra azul */
-}
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ced4da; /* Borde gris claro */
+        border-radius: 5px;
+        font-size: 1rem;
+        background-color: #495057; /* Fondo oscuro del input */
+        color: #ffffff; /* Texto blanco */
+        transition: border-color 0.3s ease-in-out;
+    }
 
-
-
-
-form button[type="submit"] {
-    background-color: #17a2b8; /* Azul claro */
-    color: #ffffff; /* Texto blanco */
-    padding: 10px 15px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-}
-
-form button[type="submit"]:hover {
-    background-color: #138496; /* Azul más oscuro */
-}
+        form input[type="text"]:focus,
+        form input[type="email"]:focus,
+        form input[type="password"]:focus {
+            border-color: #17a2b8; /* Azul claro al enfocar */
+            outline: none;
+            box-shadow: 0 0 5px rgba(23, 162, 184, 0.5); /* Sombra azul */
+        }
 
 
-form h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-    color: #ffffff; /* Texto blanco */
-}
+
+
+    form button[type="submit"] {
+        background-color: #17a2b8; /* Azul claro */
+        color: #ffffff; /* Texto blanco */
+        padding: 10px 15px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        form button[type="submit"]:hover {
+            background-color: #138496; /* Azul más oscuro */
+        }
+
+
+    form h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ffffff; /* Texto blanco */
+    }
 
 
 @media (max-width: 576px) {

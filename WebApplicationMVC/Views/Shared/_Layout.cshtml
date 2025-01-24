@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,33 +12,38 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid ">
-                <a class="navbar-brand mx-5" asp-area="" asp-controller="Home" asp-action="Index"><img src="@Url.Content("~/img/Brillacar-Logo.png")" alt="Logo BrillaCar" style="width:100px; height:80px"/></a>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1 justify-content-end fs-4 mx-5">
-                        <li class="nav-item mx-2">
-                            <a class="nav-link text-dark p-0" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark fixed-top">
+            <div class="container-fluid">
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <a class="navbar-brand mx-5" asp-area="" asp-controller="Home" asp-action="Index"><img src="@Url.Content("~/img/Brillacar-Logo.png")" alt="Logo BrillaCar" style="width:100px; height:80px" /></a>
+                <div class="collapse navbar-collapse" id="navbar">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class=" nav-link" href="#home">Home</a>
                         </li>
-                        <li class="nav-item mx-2 ">
-                            <a class="nav-link text-dark p-0" asp-area="" asp-controller="Home" asp-action="Servicios">Servicios</a>
+                        <li class="nav-item">
+                            <a class=" nav-link" href="#servicios">Servicios</a>
                         </li>
-                        <li class="nav-item mx-2 ">
-                            <a class="nav-link text-dark p-0" asp-area="" asp-controller="Home" asp-action="Privacy">Contáctos</a>
+                        <li class="nav-item">
+                            <a class=" nav-link" href="#contactos">Contáctos</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+
+    <main role="main" class="">
+        @RenderBody()
+    </main>
+
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container-fluid">
             &copy; 2025 BrillaCar. Todos los derechos reservados. - <a asp-area="" asp-controller="Home" asp-action="Privacy">Servicios</a>
         </div>
     </footer>
