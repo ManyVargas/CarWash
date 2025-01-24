@@ -11,5 +11,7 @@ namespace Application.UsesCases.Facturas.GenerarFactura
         public int FacturaId { get; set; }
         public string NombreServicio { get; set; }
         public int Cantidad { get; set; }
+        public decimal Precio { get; set; }
+        public decimal Total => Cantidad * Precio; // Total calculado automáticamente
     }
 }
