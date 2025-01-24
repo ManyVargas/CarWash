@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Application.UsesCases.Clientes.ObtenerClientes.ObtenerClientesResponse>
+@{
+    ViewData["Title"] = "Admin Clientes";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid">
+
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-4">
+        <a class="btn btn-primary me-md-2" asp-controller="ClienteView" asp-action="RegistrarCliente">Agregar Cliente</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Acciones</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Email</th>
+
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+
+            @foreach (var cliente in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="btn btn-primary"
+                           asp-controller="ClienteView"
+                           asp-action="ActualizarCliente"
+                           asp-route-email="@cliente.Email"
+                           asp-route-telefono="@cliente.Telefono">Editar</a>
+
+                        <a class="btn btn-danger"
+                           asp-controller="ClienteView"
+                           asp-action="EliminarCliente"
+                           asp-route-email="@cliente.Email"
+                           asp-route-telefono="@cliente.Telefono">Borrar</a>
+                    </td>
+                    <td>@cliente.Nombre</td>
+                    <td>@cliente.Apellido</td>
+                    <td>@cliente.Telefono</td>
+                    <td>@cliente.Email</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
+
+
+
+

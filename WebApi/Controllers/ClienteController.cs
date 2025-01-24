@@ -106,7 +106,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("agregar")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> AgregarCliente(RegistrarClienteRequest registrarClienteRequest)
         {
             //_logger.LogInformation("Comenzando a agregar un cliente.");
@@ -136,8 +136,8 @@ namespace WebApi.Controllers
         }
 
         [HttpPut("actualizar")]
-        [Authorize]
-        public async Task<IActionResult> ActualizarCliente(ActualizarClienteRequest actualizarClienteRequest, string? telefono, string? email)
+        //[Authorize]
+        public async Task<IActionResult> ActualizarCliente([FromBody] ActualizarClienteRequest actualizarClienteRequest, [FromQuery] string? telefono, [FromQuery] string? email)
         {
             await _registrarLog.Handle("Information", nameof(ClienteController), "Comenzando a actualizar un cliente.");
             try
@@ -201,7 +201,7 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("eliminar")]
-        [Authorize]
+        //[Authorize]
         public async Task<IActionResult> EliminarCliente(string? telefono, string? email)
         {
             await _registrarLog.Handle("Information", nameof(ClienteController), "Comenzando a eliminar un cliente.");

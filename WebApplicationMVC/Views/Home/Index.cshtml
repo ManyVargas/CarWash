@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Application.UsesCases.Servicios.ObtenerServicios.ObtenerServiciosResponse>
+
+@{
     ViewData["Title"] = "Inicio";
 }
 
@@ -14,11 +16,10 @@
                     Hacemos que tu auto brille como nunca antes
                     lo ha hecho.
                 </p>
-                <button class="btn btn-primary btn-lg"
-                        data-bs-toggle="modal"
-                        data-bs-target="#servicios">
+                <a class="btn btn-primary btn-lg"
+                        href="#servicios">
                     Ir a nuestros servicios
-                </button>
+                </a>
             </div>
             <img class="img-fluid w-30 d-none d-sm-block"
                  src="img/car-washed.png"
@@ -31,52 +32,25 @@
 
 <section id="servicios" class="p-5">
 
-    <div class="container">
-        <div class="row text-center g-4">
-            <h1 class="text-dark">Nuestros Servicios</h1>
-            <div class="col-md">
-                <div class="card bg-dark text-light">
-                    <div class="card-body text-center">
-                        <img src="~/img/car-wash.png" class="card-img-top w-50" />
+    <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center align-items-center">
+        @foreach(var servicio in Model)
+        {
+            <div class="col d-flex justify-content-center">
+                <div class="card">
+                    
+                    <div class="card-body">
+                        <div class="icon-container mb-3 text-center">
+                            <i class="fa-sharp-duotone fa-regular fa-car-wash"></i>
+                        </div>
+                        <h5 class="card-title">@servicio.Nombre</h5>
+                        <p class="card-text">@servicio.Descripcion</p>
                     </div>
-                    <h3 class="card-title mb-3">
-                        Lavado Sencillo
-                    </h3>
-                    <p class="card-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    </p>
-                    <a href="#" class="btn btn-primary ">Leer Mas</a>
+                    <div class="card-footer">
+                        <small class="text-body-secondary">@servicio.DuracionMinutos minutos - RD$ @servicio.Precio</small>
+                    </div>
                 </div>
             </div>
-            <div class="col-md">
-                <div class="card bg-dark text-light">
-                    <div class="card-body text-center">
-                        <img src="~/img/car-wash (2).png" class="card-img-top w-50" />
-                    </div>
-                    <h3 class="card-title mb-3">
-                        Lavado Premium
-                    </h3>
-                    <p class="card-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    </p>
-                    <a href="#" class="btn btn-primary">Leer Mas</a>
-                </div>
-            </div>
-            <div class="col-md">
-                <div class="card bg-dark text-light">
-                    <div class="card-body text-center">
-                        <img src="~/img/car-polish.png" class="card-img-top w-50" />
-                    </div>
-                    <h3 class="card-title mb-3">
-                        Lavado Premium
-                    </h3>
-                    <p class="card-text">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    </p>
-                    <a href="#" class="btn  btn-primary">Leer Mas</a>
-                </div>
-            </div>
-        </div>
+        }
     </div>
 
 </section>
